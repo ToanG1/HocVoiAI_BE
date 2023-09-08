@@ -39,7 +39,7 @@ export class UserController {
   }
 
   @Get('/:id')
-  getUser(@Param('id', ParseIntPipe) userId: string) {
+  getUser(@Param('id', ParseIntPipe) userId: number) {
     try {
       return this.userService.getUser(userId);
     } catch (error) {
@@ -50,7 +50,7 @@ export class UserController {
   @Put('/:id')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   updateUser(
-    @Param('id', ParseIntPipe) userId: string,
+    @Param('id', ParseIntPipe) userId: number,
     @Body() userUpdate: UpdateUserDto,
   ) {
     try {
@@ -61,7 +61,7 @@ export class UserController {
   }
 
   @Delete('/:id')
-  deleteUser(@Param('id', ParseIntPipe) userId: string) {
+  deleteUser(@Param('id', ParseIntPipe) userId: number) {
     try {
       return this.userService.deleteUser(userId);
     } catch (error) {
