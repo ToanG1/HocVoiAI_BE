@@ -43,7 +43,7 @@ export class MinioClientService {
     return await this.minioClient.presignedUrl(
       'GET',
       this.bucketName,
-      fileName,
+      process.env.IMAGE_PATH + fileName,
     );
   }
 
