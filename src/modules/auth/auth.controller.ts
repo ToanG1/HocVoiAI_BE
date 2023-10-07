@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './authDto/login.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 

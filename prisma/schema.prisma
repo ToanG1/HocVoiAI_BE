@@ -7,12 +7,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User
 model User {
-  id        Int   @id @default(autoincrement())
+  uuid      String      @id @default(uuid())
   name      String
-  email     String   @unique
+  email     String      @unique
   password  String
-  isAdmin   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isAdmin   Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  previlege Privilege[]
+}
+
+// User to Roadmap Privilege
+model Privilege {
+  id            Int            @id @default(autoincrement())
+  user          User           @relation(fields: [userId], references: [uuid])
+  userId        String
+  roadmapDetail RoadmapDetails @relation(fields: [rmdId], references: [id])
+  rmdId         String
+  type          String
+  createdAt     DateTime
+}
+
+// Roadmap
+model Content {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  topic       Topic  @relation(fields: [topicId], references: [id])
+  topicId     Int
+}
+
+model Topic {
+  id        Int       @id @default(autoincrement())
+  name      String
+  contents  Content[]
+  roadmap   Roadmap   @relation(fields: [roadmapId], references: [id])
+  roadmapId Int
+}
+
+model Roadmap {
+  id        Int            @id @default(autoincrement())
+  title     String
+  topics    Topic[]
+  details   RoadmapDetails @relation(fields: [detailsId], references: [id])
+  detailsId String         @unique
+}
+
+// Roadmap details
+
+model Tag {
+  id       Int              @id @default(autoincrement())
+  name     String
+  roadmaps RoadmapDetails[]
+}
+
+model Category {
+  id       Int              @id @default(autoincrement())
+  name     String
+  roadmaps RoadmapDetails[]
+}
+
+model RoadmapDetails {
+  id          String      @id @default(uuid())
+  title       String
+  avatar      String
+  rating      Int
+  description String
+  level       String
+  duration    Int
+  topics      Int
+  tag         Tag[]
+  language    String
+  isPublic    Boolean
+  category    Category    @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  roadmap     Roadmap?
+  privileges  Privilege[]
+  createdAt   DateTime
+  updateAt    DateTime
 }
