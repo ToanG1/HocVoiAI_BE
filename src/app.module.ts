@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { MinioClientModule } from './modules/minio-client/minio-client.module';
 import { ConfigModule } from '@nestjs/config';
+import { RoadmapModule } from './modules/roadmap/roadmap.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    RoadmapModule,
   ],
   controllers: [AppController],
   providers: [AppService],

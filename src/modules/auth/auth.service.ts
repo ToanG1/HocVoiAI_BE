@@ -19,7 +19,7 @@ export class AuthService {
       throw new HttpException('wrong password', HttpStatus.UNAUTHORIZED);
     }
     const payload = {
-      sub: user.id,
+      sub: user.uuid,
       username: user.name,
       isAdmin: user.isAdmin,
     };
@@ -30,7 +30,7 @@ export class AuthService {
 
   async signUp(signUpDto: CreateUserDto) {
     const createdUser = await this.usersService.createUser(signUpDto);
-    const payload = { sub: createdUser.id, username: createdUser.name };
+    const payload = { sub: createdUser.uuid, username: createdUser.name };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

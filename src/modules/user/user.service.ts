@@ -47,7 +47,7 @@ export class UserService {
     }
   }
 
-  async getUser(userId: number) {
+  async getUser(userId: string) {
     try {
       const foundUser = await this.findUserById(userId);
       await this.throwNotFoundIfUserNotProvided(foundUser);
@@ -59,13 +59,13 @@ export class UserService {
     }
   }
 
-  async updateUser(userId: number, updateUser: UpdateUserDto) {
+  async updateUser(userId: string, updateUser: UpdateUserDto) {
     try {
       const foundUser = await this.findUserById(userId);
       await this.throwNotFoundIfUserNotProvided(foundUser);
       const updatedUser = await this.prismaService.user.update({
         where: {
-          id: userId,
+          uuid: userId,
         },
         data: updateUser,
       });
@@ -77,13 +77,13 @@ export class UserService {
     }
   }
 
-  async deleteUser(userId: number) {
+  async deleteUser(userId: string) {
     try {
       const foundUser = await this.findUserById(userId);
       await this.throwNotFoundIfUserNotProvided(foundUser);
       const deletedUser = await this.prismaService.user.delete({
         where: {
-          id: userId,
+          uuid: userId,
         },
       });
 
@@ -93,11 +93,11 @@ export class UserService {
     }
   }
 
-  async findUserById(userID: number): Promise<User | null | undefined> {
+  async findUserById(userID: string): Promise<User | null | undefined> {
     try {
       return await this.prismaService.user.findUnique({
         where: {
-          id: userID,
+          uuid: userID,
         },
       });
     } catch (error) {
