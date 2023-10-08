@@ -21,38 +21,39 @@ model User {
 
 // User to Roadmap Privilege
 model Privilege {
-  id            Int            @id @default(autoincrement())
   user          User           @relation(fields: [userId], references: [uuid])
   userId        String
   roadmapDetail RoadmapDetails @relation(fields: [rmdId], references: [id])
   rmdId         String
   type          String
   createdAt     DateTime
+
+  @@id([userId, rmdId])
 }
 
 // Roadmap
-model Content {
-  id          Int    @id @default(autoincrement())
-  name        String
-  description String
-  topic       Topic  @relation(fields: [topicId], references: [id])
-  topicId     Int
-}
+// model Content {
+//   id          Int    @id @default(autoincrement())
+//   name        String
+//   description String
+//   topic       Topic  @relation(fields: [topicId], references: [id])
+//   topicId     Int
+// }
 
-model Topic {
-  id        Int       @id @default(autoincrement())
-  name      String
-  contents  Content[]
-  roadmap   Roadmap   @relation(fields: [roadmapId], references: [id])
-  roadmapId Int
-}
+// model Topic {
+//   id        Int       @id @default(autoincrement())
+//   name      String
+//   contents  Content[]
+//   roadmap   Roadmap   @relation(fields: [roadmapId], references: [id])
+//   roadmapId Int
+// }
 
 model Roadmap {
   id        Int            @id @default(autoincrement())
   title     String
-  topics    Topic[]
+  topics    String
   details   RoadmapDetails @relation(fields: [detailsId], references: [id])
-  detailsId String         @unique
+  detailsId String        @unique
 }
 
 // Roadmap details
@@ -78,13 +79,14 @@ model RoadmapDetails {
   level       String
   duration    Int
   topics      Int
-  tag         Tag[]
+  tags         Tag[]
   language    String
   isPublic    Boolean
-  category    Category    @relation(fields: [categoryId], references: [id])
-  categoryId  Int
+  category    Category?    @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
   roadmap     Roadmap?
   privileges  Privilege[]
+  type        Int
   createdAt   DateTime
   updateAt    DateTime
 }
