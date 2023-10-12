@@ -6,11 +6,14 @@ import { MinioClientModule } from './modules/minio-client/minio-client.module';
 import { ConfigModule } from '@nestjs/config';
 import { RoadmapModule } from './modules/roadmap/roadmap.module';
 
+import configuration from './config/configuration';
+
 @Module({
   imports: [
     AuthModule,
     MinioClientModule,
     ConfigModule.forRoot({
+      load: [configuration],
       isGlobal: true,
     }),
     RoadmapModule,

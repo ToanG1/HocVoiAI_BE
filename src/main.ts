@@ -6,12 +6,14 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import cors from '@fastify/cors';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
+
   app.useGlobalPipes(
     new ValidationPipe({
       disableErrorMessages: true,
@@ -30,7 +32,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  //Cors
+  await app.register(cors, {
+    origin: 'http://localhost:3000',
+  });
+
+  await app.listen(process.env.PORT || 3001);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

@@ -120,7 +120,7 @@ export class RoadmapService {
       // Check if roadmap content is exist then create
       let rm: any;
       if (updateRoadmapDto.roadmap) {
-        const removeRoadmap = await this.prismaService.roadmap.delete({
+        await this.prismaService.roadmap.delete({
           where: {
             detailsId: id,
           },
