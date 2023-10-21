@@ -20,13 +20,13 @@ export class MinioClientController {
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
     await this.minioService.createBucketIfNotExists();
     const fileName = await this.minioService.uploadFile(file);
-    return fileName;
+    return { url: fileName };
   }
 
   @Get('image/:fileName')
   async getImage(@Param('fileName') fileName: string) {
     const fileUrl = await this.minioService.getFileUrl(fileName);
-    return fileUrl;
+    return { url: fileUrl };
   }
 
   @Delete('image/:fileName')

@@ -25,14 +25,15 @@ export class RoadmapService {
     } else undefined;
   }
 
-  getCategory(categoryId: number) {
-    return categoryId !== undefined
-      ? this.prismaService.category.findUnique({
-          where: {
-            id: categoryId,
-          },
-        })
-      : undefined;
+  async getCategory(categoryId: number) {
+    if (categoryId !== undefined) {
+      const category = await this.prismaService.category.findUnique({
+        where: {
+          id: categoryId,
+        },
+      });
+      return category ? category : undefined;
+    } else return undefined;
   }
 
   async create(userId: string, createRoadmapDto: CreateRoadmapDto) {
@@ -104,6 +105,9 @@ export class RoadmapService {
         where: {
           id: id,
         },
+        include: {
+          roadmap: true,
+        },
       });
       return rm;
     } catch (error) {
@@ -160,7 +164,7 @@ export class RoadmapService {
           },
           roadmap: { connect: rm },
           type: updateRoadmapDto.type || undefined,
-          updateAt: new Date() || undefined,
+          updateAt: new Date(),
         },
       });
     } catch (error) {
