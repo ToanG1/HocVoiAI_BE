@@ -28,15 +28,13 @@ export class MinioClientService {
     const fileName = `${process.env.IMAGE_PATH}${Date.now()}-${
       file.originalname
     }`;
-    // const fileName = 'image/' + `${Date.now()}-${file.originalname}`;
-    // console.log(fileName);
     await this.minioClient.putObject(
       this.bucketName,
       fileName,
       file.buffer,
       file.size,
     );
-    return fileName;
+    return process.env.MINIO_BUCKET + '/' + fileName;
   }
 
   async getFileUrl(fileName: string) {

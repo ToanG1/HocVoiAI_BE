@@ -9,14 +9,16 @@ datasource db {
 
 // User
 model User {
-  uuid      String      @id @default(uuid())
-  name      String
-  email     String      @unique
-  password  String
-  isAdmin   Boolean     @default(false)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  previlege Privilege[]
+  uuid            String          @id @default(uuid())
+  name            String
+  email           String          @unique
+  password        String
+  isAdmin         Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  previlege       Privilege[]
+  questions       Question[]
+  questionReplies QuestionReply[]
 }
 
 // User to Roadmap Privilege
@@ -53,21 +55,23 @@ model Roadmap {
   title     String
   topics    String
   details   RoadmapDetails @relation(fields: [detailsId], references: [id])
-  detailsId String        @unique
+  detailsId String         @unique
 }
 
 // Roadmap details
 
 model Tag {
-  id       Int              @id @default(autoincrement())
-  name     String
-  roadmaps RoadmapDetails[]
+  id        Int              @id @default(autoincrement())
+  name      String
+  roadmaps  RoadmapDetails[]
+  questions Question[]
 }
 
 model Category {
   id       Int              @id @default(autoincrement())
   name     String
   roadmaps RoadmapDetails[]
+  question Question[]
 }
 
 model RoadmapDetails {
@@ -79,14 +83,39 @@ model RoadmapDetails {
   level       String
   duration    Int
   topics      Int
-  tags         Tag[]
+  tags        Tag[]
   language    String
   isPublic    Boolean
-  category    Category?    @relation(fields: [categoryId], references: [id])
+  category    Category?   @relation(fields: [categoryId], references: [id])
   categoryId  Int?
   roadmap     Roadmap?
   privileges  Privilege[]
   type        Int
   createdAt   DateTime
   updateAt    DateTime
+}
+
+model Question {
+  id        Int             @id @default(autoincrement())
+  title     String
+  content   String
+  user      User            @relation(fields: [userId], references: [uuid])
+  userId    String
+  tags      Tag[]
+  category  Category?       @relation(fields: [cateId], references: [id])
+  cateId    Int?
+  replies   QuestionReply[]
+  createdAt DateTime
+  updateAt  DateTime
+}
+
+model QuestionReply {
+  id         Int      @id @default(autoincrement())
+  content    String
+  user       User     @relation(fields: [userId], references: [uuid])
+  userId     String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId Int
+  createdAt  DateTime
+  updateAt   DateTime
 }
