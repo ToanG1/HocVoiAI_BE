@@ -26,7 +26,7 @@ async function bootstrap() {
 
   //Cors
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://localhost:5002'],
   });
 
   await app.listen(process.env.PORT || 3001);

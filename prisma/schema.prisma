@@ -28,6 +28,7 @@ model Privilege {
   roadmapDetail RoadmapDetails @relation(fields: [rmdId], references: [id])
   rmdId         String
   type          String
+  progress      Float
   createdAt     DateTime
 
   @@id([userId, rmdId])
@@ -56,6 +57,8 @@ model Roadmap {
   topics    String
   details   RoadmapDetails @relation(fields: [detailsId], references: [id])
   detailsId String         @unique
+  createdAt DateTime
+  updatedAt DateTime
 }
 
 // Roadmap details
@@ -81,7 +84,7 @@ model RoadmapDetails {
   rating      Int
   description String
   level       String
-  duration    Int
+  duration    String
   topics      Int
   tags        Tag[]
   language    String

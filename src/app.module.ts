@@ -7,6 +7,9 @@ import { ConfigModule } from '@nestjs/config';
 import { RoadmapModule } from './modules/roadmap/roadmap.module';
 import { QuestionModule } from './modules/question/question.module';
 import { QuestionReplyModule } from './modules/question-reply/question-reply.module';
+import { CategoryModule } from './modules/category/category.module';
+import { AiApiModule } from './modules/ai-api/ai-api.module';
+import { PrivilegeModule } from './modules/privilege/privilege.module';
 
 import configuration from './config/configuration';
 
@@ -21,6 +24,9 @@ import configuration from './config/configuration';
     RoadmapModule,
     QuestionModule,
     QuestionReplyModule,
+    CategoryModule,
+    AiApiModule,
+    PrivilegeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

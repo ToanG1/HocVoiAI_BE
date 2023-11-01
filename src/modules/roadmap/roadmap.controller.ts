@@ -15,14 +15,17 @@ import { RoadmapService } from './roadmap.service';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
 import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
-import { PrivilegeService } from './privilege.service';
+import { PrivilegeService } from '../privilege/privilege.service';
 import { Privilege } from '../../utils/enums/privilege';
+import { AiApiService } from '../ai-api/ai-api.service';
+import { GenRoadmap } from './dto/gen-roadmap.dto';
 
 @Controller('api/roadmap')
 export class RoadmapController {
   constructor(
     private readonly roadmapService: RoadmapService,
     private readonly privilegeService: PrivilegeService,
+    private readonly aiService: AiApiService,
   ) {}
 
   @Post()
@@ -34,6 +37,12 @@ export class RoadmapController {
   @Get()
   findAllPublicWithoutContent() {
     return this.roadmapService.findAllPublicWithoutContent();
+  }
+
+  @Get('/user')
+  @UseGuards(AuthGuard)
+  async findManyOfUser(@Request() req: any) {
+    return this.privilegeService.getAllPrivilege(req.user.sub);
   }
 
   @Get(':id')
@@ -79,6 +88,7 @@ export class RoadmapController {
     @Body() updateRoadmapDto: UpdateRoadmapDto,
   ) {
     try {
+      console.log(updateRoadmapDto);
       //Check if the user is the owner
       const right = await this.privilegeService.getPrivilege(
         req.user.sub,
@@ -116,5 +126,30 @@ export class RoadmapController {
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
+  }
+
+  @Post('/generate')
+  @UseGuards(AuthGuard)
+  async generateRoadmap(
+    @Body() genRoadmapDto: GenRoadmap,
+    @Request() req: any,
+  ) {
+    const promises = genRoadmapDto.topics.map((item) => {
+      console.log(item);
+      return this.aiService.generateRoadmap(
+        req.user.sub,
+        item.topic,
+        item.level,
+        item.language,
+      );
+    });
+
+    Promise.all(promises)
+      .then((results) => {
+        console.log(results);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }
