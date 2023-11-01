@@ -24,4 +24,17 @@ export class PrivilegeService {
       },
     });
   }
+
+  getAllPrivilege(uuid: string) {
+    return this.prismaService.privilege.findMany({
+      where: {
+        userId: uuid,
+      },
+      select: {
+        createdAt: true,
+        roadmapDetail: true,
+        progress: true,
+      },
+    });
+  }
 }

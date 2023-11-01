@@ -3,7 +3,7 @@ import { CreateRoadmapDto } from './dto/create-roadmap.dto';
 import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { Privilege } from 'src/utils/enums/privilege';
-import { PrivilegeService } from './privilege.service';
+import { PrivilegeService } from '../privilege/privilege.service';
 
 @Injectable()
 export class RoadmapService {
@@ -46,14 +46,14 @@ export class RoadmapService {
       const roadmapDetails = this.prismaService.roadmapDetails.create({
         data: {
           title: createRoadmapDto.title,
-          avatar: createRoadmapDto.avatar,
+          avatar: createRoadmapDto.avatar || '',
           rating: 0,
-          description: createRoadmapDto.description,
-          level: createRoadmapDto.level,
-          duration: createRoadmapDto.duration,
-          topics: createRoadmapDto.topics,
-          language: createRoadmapDto.language,
-          isPublic: createRoadmapDto.isPublic,
+          description: createRoadmapDto.description || '',
+          level: createRoadmapDto.level || '',
+          duration: createRoadmapDto.duration || '',
+          topics: createRoadmapDto.topics || 0,
+          language: createRoadmapDto.language || '',
+          isPublic: createRoadmapDto.isPublic || false,
           category: {
             connect: category,
           },
@@ -63,7 +63,53 @@ export class RoadmapService {
           privileges: {
             create: {
               type: Privilege[Privilege.OWNER],
+              progress: 0,
               userId: userId,
+              createdAt: new Date(),
+            },
+          },
+          type: createRoadmapDto.type,
+          createdAt: new Date(),
+          updateAt: new Date(),
+        },
+      });
+
+      return roadmapDetails;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async createGeneratedRoadmap(
+    userId: string,
+    createRoadmapDto: CreateRoadmapDto,
+  ) {
+    try {
+      // Create roadmap details
+      const roadmapDetails = this.prismaService.roadmapDetails.create({
+        data: {
+          title: createRoadmapDto.title,
+          avatar: createRoadmapDto.avatar || '',
+          rating: 0,
+          description: createRoadmapDto.description || '',
+          level: createRoadmapDto.level || '',
+          duration: createRoadmapDto.duration || '',
+          topics: createRoadmapDto.topics || 0,
+          language: createRoadmapDto.language || '',
+          isPublic: createRoadmapDto.isPublic || false,
+          privileges: {
+            create: {
+              type: Privilege[Privilege.OWNER],
+              progress: 0,
+              userId: userId,
+              createdAt: new Date(),
+            },
+          },
+          roadmap: {
+            create: {
+              title: createRoadmapDto.title,
+              topics: createRoadmapDto.milestones,
+              updatedAt: new Date(),
               createdAt: new Date(),
             },
           },
@@ -107,6 +153,8 @@ export class RoadmapService {
         },
         include: {
           roadmap: true,
+          tags: true,
+          category: true,
         },
       });
       return rm;
@@ -121,27 +169,6 @@ export class RoadmapService {
       const tags = await this.getTag(updateRoadmapDto.tagId);
       const category = await this.getCategory(updateRoadmapDto.categoryId);
 
-      // Check if roadmap content is exist then create
-      let rm: any;
-      if (updateRoadmapDto.roadmap) {
-        await this.prismaService.roadmap.delete({
-          where: {
-            detailsId: id,
-          },
-        });
-        rm = await this.prismaService.roadmap.create({
-          data: {
-            title: updateRoadmapDto.roadmap.title,
-            topics: updateRoadmapDto.roadmap.topics,
-            detailsId: id,
-          },
-        });
-      } else
-        rm = await this.prismaService.roadmap.findUnique({
-          where: {
-            detailsId: id,
-          },
-        });
       // Check if tag id is legal and connect with roadmap
       return this.prismaService.roadmapDetails.update({
         where: {
@@ -162,7 +189,24 @@ export class RoadmapService {
           category: {
             connect: category,
           },
-          roadmap: { connect: rm },
+          roadmap: {
+            upsert: {
+              where: {
+                detailsId: id,
+              },
+              update: {
+                title: updateRoadmapDto.title,
+                topics: updateRoadmapDto.milestones,
+                updatedAt: new Date(),
+              },
+              create: {
+                title: updateRoadmapDto.title,
+                topics: updateRoadmapDto.milestones,
+                updatedAt: new Date(),
+                createdAt: new Date(),
+              },
+            },
+          },
           type: updateRoadmapDto.type || undefined,
           updateAt: new Date(),
         },
