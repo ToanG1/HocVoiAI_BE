@@ -18,7 +18,6 @@ import { AuthGuard } from 'src/guard/auth.guard';
 import { PrivilegeService } from '../privilege/privilege.service';
 import { Privilege } from '../../utils/enums/privilege';
 import { AiApiService } from '../ai-api/ai-api.service';
-import { GenRoadmap } from './dto/gen-roadmap.dto';
 
 @Controller('api/roadmap')
 export class RoadmapController {
@@ -126,30 +125,5 @@ export class RoadmapController {
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
-  }
-
-  @Post('/generate')
-  @UseGuards(AuthGuard)
-  async generateRoadmap(
-    @Body() genRoadmapDto: GenRoadmap,
-    @Request() req: any,
-  ) {
-    const promises = genRoadmapDto.topics.map((item) => {
-      console.log(item);
-      return this.aiService.generateRoadmap(
-        req.user.sub,
-        item.topic,
-        item.level,
-        item.language,
-      );
-    });
-
-    Promise.all(promises)
-      .then((results) => {
-        console.log(results);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   }
 }
