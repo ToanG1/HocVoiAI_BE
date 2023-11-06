@@ -11,9 +11,6 @@ export class AiApiService {
     private readonly roadmapService: RoadmapService,
   ) {}
 
-  maxAttemps: number = 3;
-  attemps: number = 0;
-
   async generateRoadmap(
     userId: string,
     topic: string,
@@ -22,7 +19,6 @@ export class AiApiService {
   ) {
     try {
       const roadmap = await this.callAI(topic, level, language);
-      console.log(roadmap);
       const createRoadmapDto: CreateRoadmapDto = {
         title: roadmap.title,
         description: roadmap.description,
@@ -41,14 +37,8 @@ export class AiApiService {
         userId,
         createRoadmapDto,
       );
-    } catch (SyntaxError) {
-      this.attemps++;
-      if (this.attemps < this.maxAttemps - 1) {
-        console.log('attemps: ' + this.attemps);
-        this.generateRoadmap(userId, topic, level, language);
-      } else {
-        console.log("Can't generate roadmap");
-      }
+    } catch (err) {
+      console.log(err);
     }
   }
 

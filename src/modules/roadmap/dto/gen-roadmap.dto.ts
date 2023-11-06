@@ -14,4 +14,7 @@ class topic {
 export class GenRoadmap {
   @IsNotEmpty()
   topics: topic[];
+
+  @IsNotEmpty()
+  userId: string;
 }

@@ -10,6 +10,7 @@ import { QuestionReplyModule } from './modules/question-reply/question-reply.mod
 import { CategoryModule } from './modules/category/category.module';
 import { AiApiModule } from './modules/ai-api/ai-api.module';
 import { PrivilegeModule } from './modules/privilege/privilege.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 import configuration from './config/configuration';
 
@@ -27,6 +28,7 @@ import configuration from './config/configuration';
     CategoryModule,
     AiApiModule,
     PrivilegeModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

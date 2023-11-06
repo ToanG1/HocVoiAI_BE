@@ -29,7 +29,7 @@ async function bootstrap() {
     origin: ['http://localhost:3000', 'http://localhost:5002'],
   });
 
-  await app.listen(process.env.PORT || 3001);
+  await app.listen(process.env.PORT || 5001);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

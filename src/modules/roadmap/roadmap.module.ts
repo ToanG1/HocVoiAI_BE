@@ -5,10 +5,10 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { PrivilegeService } from '../privilege/privilege.service';
 import { AiApiService } from '../ai-api/ai-api.service';
 import { HttpModule } from '@nestjs/axios';
-
+import { RoadmapGateway } from './roadmap.gateway';
 @Module({
   controllers: [RoadmapController],
-  providers: [RoadmapService, PrivilegeService, AiApiService],
+  providers: [RoadmapService, PrivilegeService, AiApiService, RoadmapGateway],
   imports: [PrismaModule, HttpModule],
 })
 export class RoadmapModule {}
