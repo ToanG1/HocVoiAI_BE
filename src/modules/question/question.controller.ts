@@ -15,6 +15,8 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 
+import { SuccessResponse } from 'src/model/successResponse';
+
 @Controller('api/question')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
@@ -22,7 +24,21 @@ export class QuestionController {
   @Post()
   @UseGuards(AuthGuard)
   create(@Body() createQuestionDto: CreateQuestionDto, @Request() req: any) {
-    return this.questionService.create(createQuestionDto, req.user.sub);
+    try {
+      const res: SuccessResponse = {
+        data: this.questionService.create(createQuestionDto, req.user.sub),
+        message: 'Create Question successfully',
+        code: 200,
+      };
+      return res;
+    } catch (err) {
+      const res: SuccessResponse = {
+        data: {},
+        message: 'Something wrong',
+        code: 500,
+      };
+      return res;
+    }
   }
 
   @Get()
