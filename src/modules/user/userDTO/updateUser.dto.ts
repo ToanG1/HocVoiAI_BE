@@ -1,39 +1,29 @@
-import { IsString, IsBoolean, IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { IsString, IsOptional } from 'class-validator';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { CreateUserDto } from './createUser.dto';
 
-export class UpdateUserDto {
+export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({
-    description: 'name of the user',
-    type: Number,
-  })
-  @IsString()
-  @IsOptional()
-  name: string;
-
-  @ApiProperty({
-    description: 'email of the user',
+    description: 'avatar string of the user',
     type: String,
   })
   @IsString()
   @IsOptional()
-  email: string;
+  avatar: string;
 
   @ApiProperty({
-    description: 'password of the user',
+    description: 'bio string of the user',
     type: String,
   })
   @IsString()
   @IsOptional()
-  password: string;
+  about: string;
+
   @ApiProperty({
-    description: 'is user admin of the system or not',
+    description: 'social links of the user',
     type: String,
   })
-  @IsBoolean()
-  @Transform(({ value }) => {
-    return Boolean(value);
-  })
+  @IsString()
   @IsOptional()
-  isAdmin: boolean;
+  socialLink: string;
 }

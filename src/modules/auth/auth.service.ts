@@ -28,6 +28,7 @@ export class AuthService {
       user_info: {
         userId: user.uuid,
         name: user.name,
+        avatar: user.userInfo ? user.userInfo.avatar : null,
       },
     };
   }
