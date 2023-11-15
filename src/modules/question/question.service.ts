@@ -66,7 +66,16 @@ export class QuestionService {
 
   findAll() {
     try {
-      return this.prismaService.question.findMany();
+      return this.prismaService.question.findMany({
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+          category: true,
+        },
+      });
     } catch (error) {
       return error.message;
     }

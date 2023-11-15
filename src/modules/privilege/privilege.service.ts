@@ -32,7 +32,24 @@ export class PrivilegeService {
       },
       select: {
         createdAt: true,
-        roadmapDetail: true,
+        roadmapDetail: {
+          select: {
+            id: true,
+            title: true,
+            avatar: true,
+            description: true,
+            level: true,
+            duration: true,
+            topics: true,
+            language: true,
+            category: true,
+            tags: true,
+            isPublic: true,
+            rating: true,
+            createdAt: true,
+            updateAt: true,
+          },
+        },
         progress: true,
       },
     });

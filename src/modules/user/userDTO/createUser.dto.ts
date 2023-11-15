@@ -38,13 +38,4 @@ export class CreateUserDto {
   })
   @IsOptional()
   isAdmin: boolean;
-
-  @ApiProperty({
-    description:
-      'notification token is for each device specific this field would be sent if notification is required this field is optional and if not sent would not operate the notification',
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  notification_token: string;
 }

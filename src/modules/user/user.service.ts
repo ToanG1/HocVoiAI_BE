@@ -35,9 +35,8 @@ export class UserService {
       const hashedPassword = await bcrypt.hash(userDto.password, Rounds);
       userDto.password = hashedPassword;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { notification_token, ...userData } = userDto;
       const createdUser = await this.prismaService.user.create({
-        data: userData,
+        data: userDto,
       });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = createdUser;
@@ -49,11 +48,20 @@ export class UserService {
 
   async getUser(userId: string) {
     try {
-      const foundUser = await this.findUserById(userId);
-      await this.throwNotFoundIfUserNotProvided(foundUser);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = foundUser;
-      return result;
+      return this.prismaService.user.findUnique({
+        where: {
+          uuid: userId,
+        },
+        select: {
+          uuid: true,
+          name: true,
+          email: true,
+          isAdmin: true,
+          userInfo: true,
+          followers: true,
+          following: true,
+        },
+      });
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -67,7 +75,33 @@ export class UserService {
         where: {
           uuid: userId,
         },
-        data: updateUser,
+        data: {
+          name: updateUser.name || undefined,
+          email: updateUser.email || undefined,
+          password: updateUser.password || undefined,
+          isAdmin: updateUser.isAdmin || undefined,
+          updatedAt: new Date(),
+          userInfo: {
+            upsert: {
+              where: {
+                userId: userId,
+              },
+              update: {
+                avatar: updateUser.avatar || undefined,
+                about: updateUser.about || undefined,
+                socialLink: updateUser.socialLink || undefined,
+                updatedAt: new Date(),
+              },
+              create: {
+                avatar: updateUser.avatar || undefined,
+                about: updateUser.about || undefined,
+                socialLink: updateUser.socialLink || undefined,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              },
+            },
+          },
+        },
       });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = updatedUser;
@@ -109,11 +143,14 @@ export class UserService {
     if (!user) throw new HttpException('user not found', HttpStatus.NOT_FOUND);
   }
 
-  async findOneByEmail(email: string): Promise<User | undefined> {
+  async findOneByEmail(email: string) {
     try {
       const foundUser = await this.prismaService.user.findUnique({
         where: {
           email: email,
+        },
+        include: {
+          userInfo: true,
         },
       });
       if (!foundUser) {

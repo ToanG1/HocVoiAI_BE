@@ -16,14 +16,15 @@ export class PaginationInterceptor<T> implements NestInterceptor<T, any> {
         const request = context.switchToHttp().getRequest();
         const page = parseInt(request.query.page, 10) || 1;
         const limit = parseInt(request.query.limit, 10) || 10;
-
-        const paginatedData = PaginationUtil.paginate(data, page, limit);
+        const paginatedData = PaginationUtil.paginate(data.data, page, limit);
 
         return {
           data: paginatedData,
+          code: data.code,
+          message: data.message,
           page,
           limit,
-          totalItems: data.length,
+          totalItems: data.data.length,
         };
       }),
     );

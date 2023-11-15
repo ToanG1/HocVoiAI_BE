@@ -142,6 +142,44 @@ export class RoadmapService {
         language: true,
         category: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async findRelativeRoadmap(id: string) {
+    const rm = this.findOne(id);
+    return await this.prismaService.roadmapDetails.findMany({
+      take: 10,
+      where: {
+        tags: {
+          some: {
+            id: {
+              in: (await rm).tags.map((tag) => tag.id),
+            },
+          },
+        },
+        category: {
+          id: (await rm).category.id,
+        },
+        isPublic: true,
+      },
+      select: {
+        title: true,
+        avatar: true,
+        rating: true,
+        description: true,
+        level: true,
+        duration: true,
+        topics: true,
+        tags: true,
+        language: true,
+        category: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
