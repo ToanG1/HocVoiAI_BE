@@ -7,6 +7,8 @@ import {
   Post,
   UseGuards,
   Request,
+  Param,
+  Req,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/modules/user/userDTO/createUser.dto';
 import { AuthService } from './auth.service';
@@ -27,6 +29,16 @@ export class AuthController {
   @Post('login')
   login(@Body() signInDto: LoginDto) {
     return this.authService.login(signInDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh/:tokenId')
+  refreshToken(
+    @Param('tokenId') tokenId: string,
+    @Body('refreshToken') refreshToken: string,
+  ) {
+    console.log(refreshToken);
+    return this.authService.refresh(tokenId, refreshToken);
   }
 
   @UseGuards(AuthGuard)

@@ -85,6 +85,8 @@ export class RoadmapService {
     createRoadmapDto: CreateRoadmapDto,
   ) {
     try {
+      const category = await this.getCategory(createRoadmapDto.categoryId);
+
       // Create roadmap details
       const roadmapDetails = this.prismaService.roadmapDetails.create({
         data: {
@@ -97,6 +99,9 @@ export class RoadmapService {
           topics: createRoadmapDto.topics || 0,
           language: createRoadmapDto.language || '',
           isPublic: createRoadmapDto.isPublic || false,
+          category: {
+            connect: category,
+          },
           privileges: {
             create: {
               type: Privilege[Privilege.OWNER],

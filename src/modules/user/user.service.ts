@@ -1,12 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 
 import { User } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from '../user/userDTO/createUser.dto';
 import { UpdateUserDto } from '../user/userDTO/updateUser.dto';
-const Rounds = 10;
 
 @Injectable()
 export class UserService {
@@ -32,8 +30,6 @@ export class UserService {
           HttpStatus.NOT_ACCEPTABLE,
         );
       }
-      const hashedPassword = await bcrypt.hash(userDto.password, Rounds);
-      userDto.password = hashedPassword;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const createdUser = await this.prismaService.user.create({
         data: userDto,
@@ -88,13 +84,13 @@ export class UserService {
               },
               update: {
                 avatar: updateUser.avatar || undefined,
-                about: updateUser.about || undefined,
+                about: updateUser.about,
                 socialLink: updateUser.socialLink || undefined,
                 updatedAt: new Date(),
               },
               create: {
                 avatar: updateUser.avatar || undefined,
-                about: updateUser.about || undefined,
+                about: updateUser.about,
                 socialLink: updateUser.socialLink || undefined,
                 createdAt: new Date(),
                 updatedAt: new Date(),

@@ -24,6 +24,17 @@ model User {
   userInfo  UserInfo?
   followers Follow[]  @relation("Followers")
   following Follow[]  @relation("Following")
+  token     Token[]
+}
+
+model Token {
+  id           String   @id @default(uuid())
+  userId       String
+  refreshToken String
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [uuid], onDelete: Cascade)
 }
 
 model UserInfo {
