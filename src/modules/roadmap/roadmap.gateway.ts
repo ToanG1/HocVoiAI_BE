@@ -36,7 +36,7 @@ export class RoadmapGateway {
             )
             .then((res) => {
               console.log(res);
-              this.server.emit('generate', res);
+              this.server.emit('generated', res);
             });
         });
         return { event: 'generate', data: 'Generating' };
