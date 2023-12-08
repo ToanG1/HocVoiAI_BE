@@ -10,7 +10,8 @@ import { QuestionReplyModule } from './modules/question-reply/question-reply.mod
 import { CategoryModule } from './modules/category/category.module';
 import { AiApiModule } from './modules/ai-api/ai-api.module';
 import { PrivilegeModule } from './modules/privilege/privilege.module';
-import { NotificationModule } from './modules/notification/notification.module';
+import { GoalsModule } from './modules/goals/goals.module';
+import { GoalBranchModule } from './modules/goal-branch/goal-branch.module';
 
 import configuration from './config/configuration';
 
@@ -28,7 +29,8 @@ import configuration from './config/configuration';
     CategoryModule,
     AiApiModule,
     PrivilegeModule,
-    NotificationModule,
+    GoalsModule,
+    GoalBranchModule,
   ],
   controllers: [AppController],
   providers: [AppService],

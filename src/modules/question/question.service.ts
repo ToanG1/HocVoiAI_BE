@@ -75,6 +75,9 @@ export class QuestionService {
           },
           category: true,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       });
     } catch (error) {
       return error.message;

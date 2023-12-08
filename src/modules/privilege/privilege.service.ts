@@ -4,6 +4,30 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class PrivilegeService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  search(searchString: string, userId: string) {
+    return this.prismaService.privilege.findMany({
+      where: {
+        userId: userId,
+        roadmapDetail: {
+          title: {
+            contains: searchString,
+          },
+        },
+      },
+      select: {
+        roadmapDetail: {
+          select: {
+            id: true,
+            title: true,
+            avatar: true,
+          },
+        },
+      },
+      take: 5,
+    });
+  }
+
   getPrivilege(uuid: string, rmId: string) {
     return this.prismaService.privilege.findUnique({
       where: {

@@ -68,6 +68,14 @@ export class RoadmapService {
               createdAt: new Date(),
             },
           },
+          roadmap: {
+            create: {
+              title: createRoadmapDto.title,
+              topics: '',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
+          },
           type: createRoadmapDto.type,
           createdAt: new Date(),
           updateAt: new Date(),

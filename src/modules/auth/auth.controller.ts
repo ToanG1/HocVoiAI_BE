@@ -8,7 +8,6 @@ import {
   UseGuards,
   Request,
   Param,
-  Req,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/modules/user/userDTO/createUser.dto';
 import { AuthService } from './auth.service';
@@ -37,8 +36,13 @@ export class AuthController {
     @Param('tokenId') tokenId: string,
     @Body('refreshToken') refreshToken: string,
   ) {
-    console.log(refreshToken);
     return this.authService.refresh(tokenId, refreshToken);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('logout/:tokenId')
+  logOut(@Param('tokenId') tokenId: string) {
+    return this.authService.signOut(tokenId);
   }
 
   @UseGuards(AuthGuard)

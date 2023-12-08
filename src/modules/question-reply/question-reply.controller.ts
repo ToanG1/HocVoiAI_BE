@@ -8,7 +8,8 @@ import {
   Delete,
   Request,
   UseGuards,
-  HttpException,
+  NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { QuestionReplyService } from './question-reply.service';
 import { CreateQuestionReplyDto } from './dto/create-question-reply.dto';
@@ -35,7 +36,7 @@ export class QuestionReplyController {
         createQuestionReplyDto.questionId,
       );
       if (!question) {
-        throw new HttpException('There was no question found', 404);
+        throw new NotFoundException();
       }
 
       // Create the question reply
@@ -69,10 +70,10 @@ export class QuestionReplyController {
       //Check if the user is the owner
       const reply = await this.questionReplyService.findOne(id);
       if (!reply) {
-        throw new HttpException('There was no question reply found', 404);
+        throw new NotFoundException();
       }
       if (reply.user.uuid !== req.user.sub) {
-        throw new HttpException('You dont have access', 403);
+        throw new NotFoundException();
       }
       return this.questionReplyService.update(+id, updateQuestionReplyDto);
     } catch (error) {
@@ -87,10 +88,10 @@ export class QuestionReplyController {
       //Check if the user is the owner
       const reply = await this.questionReplyService.findOne(id);
       if (!reply) {
-        throw new HttpException('There was no question reply found', 404);
+        throw new NotFoundException();
       }
       if (reply.user.uuid !== req.user.sub) {
-        throw new HttpException('You dont have access', 403);
+        throw new ForbiddenException();
       }
       return this.questionReplyService.remove(+id);
     } catch (error) {

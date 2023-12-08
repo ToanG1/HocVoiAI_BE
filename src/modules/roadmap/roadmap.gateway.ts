@@ -22,6 +22,7 @@ export class RoadmapGateway {
 
   @WebSocketServer()
   server: Server;
+
   @SubscribeMessage('generate')
   findAll(@MessageBody() genRoadmapDto: GenRoadmap): WsResponse<string> {
     try {
