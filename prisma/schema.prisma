@@ -25,6 +25,7 @@ model User {
   followers Follow[]  @relation("Followers")
   following Follow[]  @relation("Following")
   token     Token[]
+  goal      Goal[]
 }
 
 model Token {
@@ -69,23 +70,6 @@ model Privilege {
 
   @@id([userId, rmdId])
 }
-
-// Roadmap
-// model Content {
-//   id          Int    @id @default(autoincrement())
-//   name        String
-//   description String
-//   topic       Topic  @relation(fields: [topicId], references: [id])
-//   topicId     Int
-// }
-
-// model Topic {
-//   id        Int       @id @default(autoincrement())
-//   name      String
-//   contents  Content[]
-//   roadmap   Roadmap   @relation(fields: [roadmapId], references: [id])
-//   roadmapId Int
-// }
 
 model Roadmap {
   id        Int            @id @default(autoincrement())
@@ -132,6 +116,8 @@ model RoadmapDetails {
   type        Int
   createdAt   DateTime
   updateAt    DateTime
+
+  goalBranch GoalBranch[]
 }
 
 model Question {
@@ -157,4 +143,26 @@ model QuestionReply {
   questionId Int
   createdAt  DateTime
   updateAt   DateTime
+}
+
+model Goal {
+  id       Int      @id @default(autoincrement())
+  name     String
+  user     User     @relation(fields: [userId], references: [uuid])
+  userId   String
+  createAt DateTime
+  updateAt DateTime
+
+  goalBranch GoalBranch[]
+}
+
+model GoalBranch {
+  id            Int            @id @default(autoincrement())
+  roamapDetails RoadmapDetails @relation(fields: [rmId], references: [id])
+  rmId          String
+  goal          Goal           @relation(fields: [goalId], references: [id])
+  goalId        Int
+
+  startDate DateTime
+  endDate   DateTime
 }

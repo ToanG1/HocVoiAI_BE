@@ -8,7 +8,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 import * as dayjs from 'dayjs';
 
-const JWT_ACCESS_TOKEN_EXPIRATION_TIME = '5m';
+const JWT_ACCESS_TOKEN_EXPIRATION_TIME = '5h';
 const JWT_REFRESH_TOKEN_EXPIRATION_TIME = '7d';
 
 const getRefreshExpiry = () => dayjs().add(7, 'd').toDate();
@@ -145,5 +145,19 @@ export class AuthService {
       secret: process.env.JWT_SECRET,
       expiresIn: JWT_REFRESH_TOKEN_EXPIRATION_TIME,
     });
+  }
+
+  async signOut(tokenId: string) {
+    try {
+      await this.prismaService.token.delete({
+        where: {
+          id: tokenId,
+        },
+      });
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
   }
 }
