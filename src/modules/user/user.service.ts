@@ -1,10 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { User } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from '../user/userDTO/createUser.dto';
 import { UpdateUserDto } from '../user/userDTO/updateUser.dto';
+
+const Rounds = 10;
 
 @Injectable()
 export class UserService {
@@ -31,6 +34,8 @@ export class UserService {
         );
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const hashedPassword = await bcrypt.hash(userDto.password, Rounds);
+      userDto.password = hashedPassword;
       const createdUser = await this.prismaService.user.create({
         data: userDto,
       });
