@@ -24,6 +24,13 @@ export class QuestionReplyService {
           createdAt: new Date(),
           updateAt: new Date(),
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
     } catch (error) {
       return error.message;
@@ -35,6 +42,13 @@ export class QuestionReplyService {
       return this.prismaService.questionReply.findMany({
         where: {
           questionId: Number(qId),
+        },
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
         },
       });
     } catch (error) {

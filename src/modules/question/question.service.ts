@@ -93,6 +93,7 @@ export class QuestionService {
         include: {
           user: {
             select: {
+              name: true,
               uuid: true,
             },
           },

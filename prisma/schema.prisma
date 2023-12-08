@@ -20,6 +20,7 @@ model User {
   previlege       Privilege[]
   questions       Question[]
   questionReplies QuestionReply[]
+  comments        QuestionComment[]
 
   userInfo  UserInfo?
   followers Follow[]  @relation("Followers")
@@ -121,15 +122,16 @@ model RoadmapDetails {
 }
 
 model Question {
-  id        Int             @id @default(autoincrement())
+  id        Int               @id @default(autoincrement())
   title     String
   content   String
-  user      User            @relation(fields: [userId], references: [uuid])
+  user      User              @relation(fields: [userId], references: [uuid])
   userId    String
   tags      Tag[]
-  category  Category?       @relation(fields: [cateId], references: [id])
+  category  Category?         @relation(fields: [cateId], references: [id])
   cateId    Int?
   replies   QuestionReply[]
+  comments  QuestionComment[]
   createdAt DateTime
   updateAt  DateTime
 }
@@ -143,6 +145,21 @@ model QuestionReply {
   questionId Int
   createdAt  DateTime
   updateAt   DateTime
+
+  questionComments QuestionComment[]
+}
+
+model QuestionComment {
+  id              Int           @id @default(autoincrement())
+  content         String
+  user            User          @relation(fields: [userId], references: [uuid])
+  userId          String
+  question        Question?      @relation(fields: [questionId], references: [id])
+  questionId      Int
+  questionReply   QuestionReply? @relation(fields: [questionReplyId], references: [id])
+  questionReplyId Int
+  createdAt       DateTime
+  updateAt        DateTime
 }
 
 model Goal {

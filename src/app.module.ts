@@ -12,6 +12,7 @@ import { AiApiModule } from './modules/ai-api/ai-api.module';
 import { PrivilegeModule } from './modules/privilege/privilege.module';
 import { GoalsModule } from './modules/goals/goals.module';
 import { GoalBranchModule } from './modules/goal-branch/goal-branch.module';
+import { QuestionCommentModule } from './modules/question-comment/question-comment.module';
 
 import configuration from './config/configuration';
 
@@ -31,6 +32,7 @@ import configuration from './config/configuration';
     PrivilegeModule,
     GoalsModule,
     GoalBranchModule,
+    QuestionCommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
