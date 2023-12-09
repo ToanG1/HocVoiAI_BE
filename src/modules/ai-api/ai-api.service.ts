@@ -51,7 +51,6 @@ export class AiApiService {
 
     const regex = /\,(?!\s*?[\{\[\"\'\w])/g;
     const object = data.response.replace(regex, '');
-
     return JSON.parse(object);
   }
 }

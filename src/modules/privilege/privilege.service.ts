@@ -74,7 +74,6 @@ export class PrivilegeService {
             updateAt: true,
           },
         },
-        progress: true,
       },
     });
   }
