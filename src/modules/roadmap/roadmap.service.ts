@@ -63,7 +63,6 @@ export class RoadmapService {
           privileges: {
             create: {
               type: Privilege[Privilege.OWNER],
-              progress: 0,
               userId: userId,
               createdAt: new Date(),
             },
@@ -113,7 +112,6 @@ export class RoadmapService {
           privileges: {
             create: {
               type: Privilege[Privilege.OWNER],
-              progress: 0,
               userId: userId,
               createdAt: new Date(),
             },
@@ -162,23 +160,16 @@ export class RoadmapService {
   }
 
   async findRelativeRoadmap(id: string) {
-    const rm = this.findOne(id);
+    const rm = await this.findOne(id);
     return await this.prismaService.roadmapDetails.findMany({
-      take: 10,
       where: {
-        tags: {
-          some: {
-            id: {
-              in: (await rm).tags.map((tag) => tag.id),
-            },
-          },
-        },
         category: {
-          id: (await rm).category.id,
+          id: rm.category.id,
         },
         isPublic: true,
       },
       select: {
+        id: true,
         title: true,
         avatar: true,
         rating: true,
@@ -246,13 +237,13 @@ export class RoadmapService {
                 detailsId: id,
               },
               update: {
-                title: updateRoadmapDto.title,
-                topics: updateRoadmapDto.milestones,
+                title: updateRoadmapDto.title || undefined,
+                topics: updateRoadmapDto.milestones || undefined,
                 updatedAt: new Date(),
               },
               create: {
                 title: updateRoadmapDto.title,
-                topics: updateRoadmapDto.milestones,
+                topics: updateRoadmapDto.milestones || undefined,
                 updatedAt: new Date(),
                 createdAt: new Date(),
               },
