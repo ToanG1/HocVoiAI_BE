@@ -18,7 +18,7 @@ export class AiApiService {
     language: string,
   ) {
     try {
-      const roadmap = await this.callAI(topic, level, language);
+      const roadmap = await this.callAIToGen(topic, level, language);
       const createRoadmapDto: CreateRoadmapDto = {
         title: roadmap.title,
         description: roadmap.description,
@@ -42,8 +42,20 @@ export class AiApiService {
     }
   }
 
-  async callAI(topic: string, level: string, language: string) {
+  async callAIToGen(topic: string, level: string, language: string) {
     const { data } = await this.httpService.axiosRef.post(`${AI_URL}/gen`, {
+      topic,
+      level,
+      language,
+    });
+
+    const regex = /\,(?!\s*?[\{\[\"\'\w])/g;
+    const object = data.response.replace(regex, '');
+    return JSON.parse(object);
+  }
+
+  async callAIToSuggest(topic: string, level: string, language: string) {
+    const { data } = await this.httpService.axiosRef.post(`${AI_URL}/suggest`, {
       topic,
       level,
       language,

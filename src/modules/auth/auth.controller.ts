@@ -6,48 +6,84 @@ import {
   HttpStatus,
   Post,
   UseGuards,
-  Request,
   Param,
+  Query,
+  UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/modules/user/userDTO/createUser.dto';
 import { AuthService } from './auth.service';
 import { LoginDto } from './authDto/login.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
+import { UserService } from '../user/user.service';
 
 @Controller('api/auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
 
-  @HttpCode(HttpStatus.OK)
   @Post('signup')
-  signUp(@Body() signUpDto: CreateUserDto) {
+  async signUp(@Body() signUpDto: CreateUserDto) {
     return this.authService.signUp(signUpDto);
   }
 
-  @HttpCode(HttpStatus.OK)
+  @Post('activate')
+  async activate(@Query('code') activationToken: string) {
+    if (!activationToken)
+      throw new NotFoundException('Activation code not found');
+    return this.authService.activate(activationToken);
+  }
+
   @Post('login')
-  login(@Body() signInDto: LoginDto) {
+  async login(@Body() signInDto: LoginDto) {
     return this.authService.login(signInDto);
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('refresh/:tokenId')
-  refreshToken(
-    @Param('tokenId') tokenId: string,
-    @Body('refreshToken') refreshToken: string,
+  @Post('refresh')
+  refreshToken(@Body('refreshToken') refreshToken: string) {
+    if (refreshToken) {
+      return this.authService.refresh(refreshToken);
+    } else throw new UnauthorizedException('Refresh token is required');
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('logout/:token')
+  logout(@Param('token') token: string) {
+    return this.authService.signOut(token);
+  }
+
+  @Get('forgot-pwd')
+  async pwdReset(@Query('email') email: string) {
+    await this.authService.handleForgotPasswordCode(email);
+  }
+
+  @Post('check-reset-code')
+  async CheckPwdResetCode(
+    @Query('email') email: string,
+    @Query('code') code: number,
   ) {
-    return this.authService.refresh(tokenId, refreshToken);
+    if (await this.authService.checkResetCode(email, code))
+      return this.authService.handleResetPasswordUrl(email);
+    return null;
   }
 
-  @UseGuards(AuthGuard)
-  @Get('logout/:tokenId')
-  logOut(@Param('tokenId') tokenId: string) {
-    return this.authService.signOut(tokenId);
+  @Post('reset-pwd/:token')
+  resetPassword(@Param('token') token: string, @Body('pwd') pwd: string) {
+    console.log(pwd);
+    return this.userService.changePassword(token, pwd);
   }
 
+  @Get('check-url-token')
+  checkUrlToken(@Query('token') token: string) {
+    return this.authService.checkUrlToken(token);
+  }
+
+  @Get('authenticate')
   @UseGuards(AuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  authenticate() {
+    return true;
   }
 }
