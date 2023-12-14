@@ -1,0 +1,6 @@
+export enum TokenType {
+  REFRESH_TOKEN,
+  RESET_TOKEN,
+  URL_TOKEN,
+  ACTIVATION_TOKEN,
+}

@@ -13,6 +13,7 @@ import { PrivilegeModule } from './modules/privilege/privilege.module';
 import { GoalsModule } from './modules/goals/goals.module';
 import { GoalBranchModule } from './modules/goal-branch/goal-branch.module';
 import { QuestionCommentModule } from './modules/question-comment/question-comment.module';
+import { MailSenderModule } from './modules/mail-sender/mail-sender.module';
 
 import configuration from './config/configuration';
 
@@ -33,6 +34,7 @@ import configuration from './config/configuration';
     GoalsModule,
     GoalBranchModule,
     QuestionCommentModule,
+    MailSenderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

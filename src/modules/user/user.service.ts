@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -6,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from '../user/userDTO/createUser.dto';
 import { UpdateUserDto } from '../user/userDTO/updateUser.dto';
+import { TokenType } from 'src/utils/enums/token-type';
 
 const Rounds = 10;
 
@@ -164,5 +170,36 @@ export class UserService {
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
+  }
+
+  async changePassword(token: string, newPassword: string) {
+    const foundToken = await this.prismaService.token.findUnique({
+      where: {
+        token_type: {
+          token: token,
+          type: TokenType[TokenType.URL_TOKEN],
+        },
+      },
+    });
+
+    if (!foundToken) {
+      throw new NotFoundException('Your token is wrong');
+    } else if (foundToken.expiresAt < new Date()) {
+      throw new NotFoundException('Your token is expired');
+    }
+
+    const deleteToken = this.prismaService.token.delete({
+      where: foundToken,
+    });
+    const updatePassword = this.prismaService.user.update({
+      where: {
+        uuid: foundToken.userId,
+      },
+      data: {
+        password: await bcrypt.hash(newPassword, Rounds),
+      },
+    });
+
+    this.prismaService.$transaction([deleteToken, updatePassword]);
   }
 }
