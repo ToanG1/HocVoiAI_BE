@@ -9,6 +9,7 @@ import {
   UseGuards,
   Request,
   Query,
+  ForbiddenException,
 } from '@nestjs/common';
 import { GoalsService } from './goals.service';
 import { CreateGoalDto } from './dto/create-goal.dto';
@@ -37,14 +38,23 @@ export class GoalsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGoalDto: UpdateGoalDto) {
-    try {
+  @UseGuards(AuthGuard)
+  async update(
+    @Param('id') id: string,
+    @Body() updateGoalDto: UpdateGoalDto,
+    @Request() req: any,
+  ) {
+    const goal = await this.goalService.findOne(Number(id));
+    if (goal.userId === req.user.sub)
       return this.goalService.update(+id, updateGoalDto);
-    } catch (err) {}
+    else throw new ForbiddenException('You dont have access to udpate!');
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.goalService.remove(+id);
+  @UseGuards(AuthGuard)
+  async remove(@Param('id') id: string, @Request() req: any) {
+    const goal = await this.goalService.findOne(Number(id));
+    if (goal.userId === req.user.sub) return this.goalService.remove(+id);
+    else throw new ForbiddenException('You dont have access to delete!');
   }
 }

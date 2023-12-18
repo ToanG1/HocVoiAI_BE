@@ -185,4 +185,16 @@ model GoalBranch {
 
   startDate DateTime
   endDate   DateTime
+  notes Note[]
+}
+
+model Note {
+  id Int @id @default(autoincrement())
+  name String 
+  content String
+  goalBranch GoalBranch @relation(fields: [goalBranchId], references: [id])
+  goalBranchId Int
+
+  createdAt DateTime
+  updateAt DateTime
 }

@@ -14,6 +14,7 @@ import { GoalsModule } from './modules/goals/goals.module';
 import { GoalBranchModule } from './modules/goal-branch/goal-branch.module';
 import { QuestionCommentModule } from './modules/question-comment/question-comment.module';
 import { MailSenderModule } from './modules/mail-sender/mail-sender.module';
+import { NoteModule } from './modules/note/note.module';
 
 import configuration from './config/configuration';
 
@@ -35,6 +36,7 @@ import configuration from './config/configuration';
     GoalBranchModule,
     QuestionCommentModule,
     MailSenderModule,
+    NoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
