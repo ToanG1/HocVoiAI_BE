@@ -60,16 +60,16 @@ export class RoadmapController {
     // Get the roadmap details with content
     const rm = await this.roadmapService.findOne(rmId);
     // Get the right of user to roadmap
-    // const right = await this.privilegeService.getPrivilege(req.user.sub, rmId);
-    // // Check if the user have right to access
-    // if (!right) throw new ForbiddenException();
+    const right = await this.privilegeService.getPrivilege(req.user.sub, rmId);
+    // Check if the user have right to access
+    if (!right) throw new ForbiddenException();
 
-    // // Check if the roadmap dont exists
-    // if (!rm) throw new NotFoundException();
+    // Check if the roadmap dont exists
+    if (!rm) throw new NotFoundException();
 
-    // // Check if roadmap is private and the user is not the owner
-    // if (!rm.isPublic && right.type !== Privilege[Privilege.OWNER])
-    //   throw new NotFoundException();
+    // Check if roadmap is private and the user is not the owner
+    if (!rm.isPublic && right.type !== Privilege[Privilege.OWNER])
+      throw new NotFoundException();
     return rm;
   }
 

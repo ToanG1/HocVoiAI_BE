@@ -141,16 +141,7 @@ export class RoadmapService {
       where: {
         isPublic: true,
       },
-      select: {
-        title: true,
-        avatar: true,
-        rating: true,
-        description: true,
-        level: true,
-        duration: true,
-        topics: true,
-        tags: true,
-        language: true,
+      include: {
         category: true,
       },
       orderBy: {
