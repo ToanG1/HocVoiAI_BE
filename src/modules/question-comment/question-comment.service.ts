@@ -52,6 +52,10 @@ export class QuestionCommentService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} questionComment`;
+    return this.prismaService.questionComment.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

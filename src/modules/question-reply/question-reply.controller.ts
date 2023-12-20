@@ -30,33 +30,25 @@ export class QuestionReplyController {
     @Body() createQuestionReplyDto: CreateQuestionReplyDto,
     @Request() req: any,
   ) {
-    try {
-      // Check if the question is legal
-      const question = await this.questionService.findOne(
-        createQuestionReplyDto.questionId,
-      );
-      if (!question) {
-        throw new NotFoundException();
-      }
-
-      // Create the question reply
-      return this.questionReplyService.create(
-        createQuestionReplyDto,
-        req.user.sub,
-      );
-    } catch (error) {
-      return error;
+    // Check if the question is legal
+    const question = await this.questionService.findOne(
+      createQuestionReplyDto.questionId,
+    );
+    if (!question) {
+      throw new NotFoundException();
     }
+
+    // Create the question reply
+    return this.questionReplyService.create(
+      createQuestionReplyDto,
+      req.user.sub,
+    );
   }
 
   @Get(':id')
   @UseGuards(AuthGuard)
   findAllRepliesInQuestion(@Param('id') id: number) {
-    try {
-      return this.questionReplyService.findAll(id);
-    } catch (error) {
-      return error.message;
-    }
+    return this.questionReplyService.findAll(id);
   }
 
   @Patch(':id')
@@ -66,36 +58,29 @@ export class QuestionReplyController {
     @Body() updateQuestionReplyDto: UpdateQuestionReplyDto,
     @Request() req: any,
   ) {
-    try {
-      //Check if the user is the owner
-      const reply = await this.questionReplyService.findOne(id);
-      if (!reply) {
-        throw new NotFoundException();
-      }
-      if (reply.user.uuid !== req.user.sub) {
-        throw new NotFoundException();
-      }
-      return this.questionReplyService.update(+id, updateQuestionReplyDto);
-    } catch (error) {
-      return error.message;
+    //Check if the user is the owner
+    const reply = await this.questionReplyService.findOne(id);
+    if (!reply) {
+      throw new NotFoundException();
     }
+    if (reply.user.uuid !== req.user.sub) {
+      throw new NotFoundException();
+    }
+    return this.questionReplyService.update(+id, updateQuestionReplyDto);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
   async remove(@Param('id') id: number, @Request() req: any) {
-    try {
-      //Check if the user is the owner
-      const reply = await this.questionReplyService.findOne(id);
-      if (!reply) {
-        throw new NotFoundException();
-      }
-      if (reply.user.uuid !== req.user.sub) {
-        throw new ForbiddenException();
-      }
-      return this.questionReplyService.remove(+id);
-    } catch (error) {
-      return error.message;
+    //Check if the user is the owner
+    const reply = await this.questionReplyService.findOne(id);
+    if (!reply) {
+      throw new NotFoundException();
     }
+    if (reply.user.uuid !== req.user.sub) {
+      throw new ForbiddenException();
+    }
+    console.log(reply);
+    return this.questionReplyService.remove(+id);
   }
 }
