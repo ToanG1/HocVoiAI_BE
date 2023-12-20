@@ -28,6 +28,7 @@ model User {
   following Follow[]  @relation("Following")
   token     Token[]
   goal      Goal[]
+  ratings   Rating[]
 }
 
 model Token {
@@ -106,6 +107,7 @@ model RoadmapDetails {
   title       String
   avatar      String
   rating      Int
+  ratings     Rating[]
   description String
   level       String
   duration    String
@@ -122,6 +124,22 @@ model RoadmapDetails {
   updateAt    DateTime
 
   goalBranch GoalBranch[]
+}
+
+model Rating {
+  id      Int             @id @default(autoincrement())
+  user    User            @relation(fields: [userId], references: [uuid])
+  userId  String
+  roadmap RoadmapDetails? @relation(fields: [rmId], references: [id])
+  rmId    String?
+
+  star      Int
+  content   String
+  type      String
+  createdAt DateTime
+  updateAt  DateTime
+
+  @@unique([userId, rmId, type])
 }
 
 model Question {
@@ -185,16 +203,16 @@ model GoalBranch {
 
   startDate DateTime
   endDate   DateTime
-  notes Note[]
+  notes     Note[]
 }
 
 model Note {
-  id Int @id @default(autoincrement())
-  name String 
-  content String
-  goalBranch GoalBranch @relation(fields: [goalBranchId], references: [id])
+  id           Int        @id @default(autoincrement())
+  name         String
+  content      String
+  goalBranch   GoalBranch @relation(fields: [goalBranchId], references: [id])
   goalBranchId Int
 
   createdAt DateTime
-  updateAt DateTime
+  updateAt  DateTime
 }
