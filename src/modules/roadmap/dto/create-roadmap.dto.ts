@@ -45,7 +45,7 @@ export class CreateRoadmapDto {
     description: 'duration of the roadmap',
     type: String,
   })
-  @IsNumber()
+  @IsString()
   @IsOptional()
   duration: string;
 

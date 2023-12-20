@@ -223,20 +223,14 @@ export class RoadmapService {
             connect: category,
           },
           roadmap: {
-            upsert: {
+            update: {
               where: {
                 detailsId: id,
               },
-              update: {
+              data: {
                 title: updateRoadmapDto.title || undefined,
                 topics: updateRoadmapDto.milestones || undefined,
                 updatedAt: new Date(),
-              },
-              create: {
-                title: updateRoadmapDto.title,
-                topics: updateRoadmapDto.milestones || undefined,
-                updatedAt: new Date(),
-                createdAt: new Date(),
               },
             },
           },

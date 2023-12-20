@@ -67,9 +67,8 @@ export class RoadmapController {
     // Check if the roadmap dont exists
     if (!rm) throw new NotFoundException();
 
-    // Check if roadmap is private and the user is not the owner
-    if (!rm.isPublic && right.type !== Privilege[Privilege.OWNER])
-      throw new NotFoundException();
+    // Check if roadmap is private and the user is dont have access
+    if (!rm.isPublic && !right.type) throw new NotFoundException();
     return rm;
   }
 
@@ -84,7 +83,9 @@ export class RoadmapController {
     const right = await this.privilegeService.getPrivilege(req.user.sub, rmId);
     if (!right) throw new NotFoundException();
     if (right.type !== Privilege[Privilege.OWNER])
-      throw new NotFoundException();
+      throw new ForbiddenException(
+        "You don't have right to update this roadmap",
+      );
     return await this.roadmapService.update(rmId, updateRoadmapDto);
   }
 

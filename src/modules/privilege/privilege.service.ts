@@ -1,9 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Privilege } from 'src/utils/enums/privilege';
 
 @Injectable()
 export class PrivilegeService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  create(rmId: string, userId: string) {
+    return this.prismaService.privilege.create({
+      data: {
+        rmdId: rmId,
+        userId: userId,
+        type: Privilege[Privilege.VISITOR],
+        createdAt: new Date(),
+      },
+    });
+  }
 
   search(searchString: string, userId: string) {
     return this.prismaService.privilege.findMany({

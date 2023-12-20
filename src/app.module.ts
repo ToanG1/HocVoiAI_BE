@@ -15,6 +15,7 @@ import { GoalBranchModule } from './modules/goal-branch/goal-branch.module';
 import { QuestionCommentModule } from './modules/question-comment/question-comment.module';
 import { MailSenderModule } from './modules/mail-sender/mail-sender.module';
 import { NoteModule } from './modules/note/note.module';
+import { RatingModule } from './modules/rating/rating.module';
 
 import configuration from './config/configuration';
 
@@ -37,6 +38,7 @@ import configuration from './config/configuration';
     QuestionCommentModule,
     MailSenderModule,
     NoteModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
