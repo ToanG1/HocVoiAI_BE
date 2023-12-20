@@ -162,12 +162,12 @@ model QuestionReply {
   content    String
   user       User     @relation(fields: [userId], references: [uuid])
   userId     String
-  question   Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
   createdAt  DateTime
   updateAt   DateTime
 
-  questionComments QuestionComment[]
+  questionComments QuestionComment[] 
 }
 
 model QuestionComment {
@@ -177,7 +177,7 @@ model QuestionComment {
   userId          String
   question        Question?      @relation(fields: [questionId], references: [id])
   questionId      Int
-  questionReply   QuestionReply? @relation(fields: [questionReplyId], references: [id])
+  questionReply   QuestionReply? @relation(fields: [questionReplyId], references: [id], onDelete: Cascade)
   questionReplyId Int
   createdAt       DateTime
   updateAt        DateTime
