@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   ForbiddenException,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { RoadmapService } from './roadmap.service';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
@@ -46,6 +47,12 @@ export class RoadmapController {
   @UseInterceptors(PaginationInterceptor)
   async findRelative(@Param('roadmapId') rmId: string) {
     return await this.roadmapService.findRelativeRoadmap(rmId);
+  }
+
+  @Get('search')
+  @UseInterceptors(PaginationInterceptor)
+  async search(@Query('keyword') title: string) {
+    return await this.roadmapService.search(title);
   }
 
   @Get('/user')

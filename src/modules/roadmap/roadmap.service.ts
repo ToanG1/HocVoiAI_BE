@@ -150,6 +150,23 @@ export class RoadmapService {
     });
   }
 
+  async search(title: string) {
+    return await this.prismaService.roadmapDetails.findMany({
+      where: {
+        title: {
+          contains: title,
+          mode: 'insensitive',
+        },
+      },
+      include: {
+        category: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
   async findRelativeRoadmap(id: string) {
     const rm = await this.findOne(id);
     return await this.prismaService.roadmapDetails.findMany({

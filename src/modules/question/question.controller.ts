@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
   UseInterceptors,
   ForbiddenException,
 } from '@nestjs/common';
@@ -35,6 +36,12 @@ export class QuestionController {
   @UseInterceptors(PaginationInterceptor)
   async findAll() {
     return await this.questionService.findAll();
+  }
+
+  @Get('search')
+  @UseInterceptors(PaginationInterceptor)
+  async search(@Query('keyword') title: string) {
+    return await this.questionService.search(title);
   }
 
   @Get(':id')

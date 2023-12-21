@@ -24,6 +24,7 @@ export class PrivilegeService {
         roadmapDetail: {
           title: {
             contains: searchString,
+            mode: 'insensitive',
           },
         },
       },

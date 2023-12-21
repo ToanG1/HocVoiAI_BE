@@ -31,126 +31,125 @@ export class QuestionService {
   }
 
   async create(createQuestionDto: CreateQuestionDto, userId: string) {
-    try {
-      //get tags and category which is legal
-      const tags = await this.getTag(createQuestionDto.tagIds);
-      const category = await this.getCategory(createQuestionDto.categoryId);
+    //get tags and category which is legal
+    const tags = await this.getTag(createQuestionDto.tagIds);
+    const category = await this.getCategory(createQuestionDto.categoryId);
 
-      const question = this.prismaService.question.create({
-        data: {
-          title: createQuestionDto.title,
-          content: createQuestionDto.content,
-          user: {
-            connect: {
-              uuid: userId,
-            },
+    const question = this.prismaService.question.create({
+      data: {
+        title: createQuestionDto.title,
+        content: createQuestionDto.content,
+        user: {
+          connect: {
+            uuid: userId,
           },
-          tags: {
-            connect: tags,
-          },
-          category: {
-            connect: category,
-          },
-          replies: {
-            create: [],
-          },
-          createdAt: new Date(),
-          updateAt: new Date(),
         },
-      });
-      return question;
-    } catch (error) {
-      return error.message;
-    }
+        tags: {
+          connect: tags,
+        },
+        category: {
+          connect: category,
+        },
+        replies: {
+          create: [],
+        },
+        createdAt: new Date(),
+        updateAt: new Date(),
+      },
+    });
+    return question;
   }
 
   findAll() {
-    try {
-      return this.prismaService.question.findMany({
-        include: {
-          user: {
-            select: {
-              name: true,
-            },
+    return this.prismaService.question.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
           },
-          category: true,
         },
-        orderBy: {
-          createdAt: 'desc',
+        category: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  search(searchString: string) {
+    return this.prismaService.question.findMany({
+      where: {
+        title: {
+          contains: searchString,
+          mode: 'insensitive',
         },
-      });
-    } catch (error) {
-      return error.message;
-    }
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        category: true,
+      },
+    });
   }
 
   async findOne(qId: number) {
-    try {
-      const q = await this.prismaService.question.findUnique({
-        where: {
-          id: Number(qId),
-        },
-        include: {
-          user: {
-            select: {
-              name: true,
-              uuid: true,
-            },
+    const q = await this.prismaService.question.findUnique({
+      where: {
+        id: Number(qId),
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            uuid: true,
           },
-          category: true,
-          tags: true,
         },
-      });
-      return q;
-    } catch (error) {
-      return error.message;
-    }
+        category: true,
+        tags: true,
+      },
+    });
+    return q;
   }
 
   async update(qId: number, updateQuestionDto: UpdateQuestionDto) {
-    try {
-      //get tags and category which is legal
-      const tags = await this.getTag(updateQuestionDto.tagIds);
-      const category = await this.getCategory(updateQuestionDto.categoryId);
+    //get tags and category which is legal
+    const tags = await this.getTag(updateQuestionDto.tagIds);
+    const category = await this.getCategory(updateQuestionDto.categoryId);
 
-      const question = this.prismaService.question.update({
-        where: {
-          id: qId,
+    const question = this.prismaService.question.update({
+      where: {
+        id: qId,
+      },
+      data: {
+        title: updateQuestionDto.title || undefined,
+        content: updateQuestionDto.content || undefined,
+        tags: {
+          connect: tags,
         },
-        data: {
-          title: updateQuestionDto.title || undefined,
-          content: updateQuestionDto.content || undefined,
-          tags: {
-            connect: tags,
-          },
-          category: {
-            connect: category,
-          },
-          updateAt: new Date(),
+        category: {
+          connect: category,
         },
-      });
-      return question;
-    } catch (error) {
-      return error.message;
-    }
+        updateAt: new Date(),
+      },
+    });
+    return question;
   }
 
   async remove(qId: number) {
-    try {
-      const deleteReplies = this.prismaService.questionReply.deleteMany({
-        where: {
-          questionId: Number(qId),
-        },
-      });
-      const deleteQuestion = this.prismaService.question.delete({
-        where: {
-          id: Number(qId),
-        },
-      });
-      await this.prismaService.$transaction([deleteReplies, deleteQuestion]);
-      return 'success';
-    } catch (error) {
-      return error.message;
-    }
+    const deleteReplies = this.prismaService.questionReply.deleteMany({
+      where: {
+        questionId: Number(qId),
+      },
+    });
+    const deleteQuestion = this.prismaService.question.delete({
+      where: {
+        id: Number(qId),
+      },
+    });
+    await this.prismaService.$transaction([deleteReplies, deleteQuestion]);
+    return 'success';
   }
 }
