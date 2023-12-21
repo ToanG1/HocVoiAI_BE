@@ -8,6 +8,7 @@ import {
   UseGuards,
   Param,
   Query,
+  Request,
   UnauthorizedException,
   NotFoundException,
 } from '@nestjs/common';
@@ -50,9 +51,9 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('logout/:token')
-  logout(@Param('token') token: string) {
-    return this.authService.signOut(token);
+  @Get('logout')
+  logout(@Request() req: any) {
+    return this.authService.signOut(req.user.sub);
   }
 
   @Get('forgot-pwd')
@@ -72,7 +73,6 @@ export class AuthController {
 
   @Post('reset-pwd/:token')
   resetPassword(@Param('token') token: string, @Body('pwd') pwd: string) {
-    console.log(pwd);
     return this.userService.changePassword(token, pwd);
   }
 
@@ -85,5 +85,11 @@ export class AuthController {
   @UseGuards(AuthGuard)
   authenticate() {
     return true;
+  }
+
+  @Post('change-pwd')
+  @UseGuards(AuthGuard)
+  changePassword(@Body('pwd') pwd: string, @Request() req: any) {
+    return this.authService.checkPwd(req.user.email, pwd);
   }
 }

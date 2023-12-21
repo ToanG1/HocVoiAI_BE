@@ -236,14 +236,12 @@ export class AuthService {
     });
   }
 
-  async signOut(token: string) {
+  async signOut(userId: string) {
     try {
-      await this.prismaService.token.delete({
+      await this.prismaService.token.deleteMany({
         where: {
-          token_type: {
-            token: token,
-            type: TokenType[TokenType.REFRESH_TOKEN],
-          },
+          userId: userId,
+          type: TokenType[TokenType.REFRESH_TOKEN],
         },
       });
       return true;
@@ -367,7 +365,51 @@ export class AuthService {
       },
     });
 
-    this.prismaService.$transaction([deleteOldToken, createToken]);
-    return await createToken;
+    return this.prismaService
+      .$transaction([deleteOldToken, createToken])
+      .then(() => {
+        return urlToken;
+      });
+  }
+
+  async checkPwd(email: string, pwd: string) {
+    const user = await this.usersService.findOneByEmail(email);
+    if (!user) throw new NotFoundException('No user found');
+    const isMatch = await bcrypt.compare(pwd, user.password);
+
+    if (!isMatch) {
+      throw new NotFoundException('Wrong password');
+    }
+
+    const urlToken = randomUUID();
+
+    const deleteOldToken = this.prismaService.token.deleteMany({
+      where: {
+        userId: user.uuid,
+        type: TokenType[TokenType.URL_TOKEN],
+      },
+    });
+
+    const createToken = this.prismaService.token.create({
+      data: {
+        user: {
+          connect: user,
+        },
+        token: urlToken,
+        type: TokenType[TokenType.URL_TOKEN],
+        expiresAt: getResetCodeExpiry(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      select: {
+        token: true,
+      },
+    });
+
+    return this.prismaService
+      .$transaction([deleteOldToken, createToken])
+      .then(() => {
+        return urlToken;
+      });
   }
 }
