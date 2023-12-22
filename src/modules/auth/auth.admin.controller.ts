@@ -9,37 +9,34 @@ import {
 } from '@nestjs/common';
 import { LoginDto } from './authDto/login.dto';
 import { AuthService } from './auth.service';
-import { AuthGuard } from 'src/guard/auth.guard';
-import { UserService } from '../user/user.service';
+import { AdminAuthGuard } from 'src/guard/adminAuth.guard';
 
 @Controller('api/admin/auth')
 export class AuthAdminController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UserService,
-  ) {}
-
-  async isUserAdmin(email: string) {
-    const user = await this.userService.findOneByEmail(email);
-    if (user.isAdmin) return true;
-    else throw new UnauthorizedException("You don't have permission");
-  }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   async login(@Body() signInDto: LoginDto) {
-    if (await this.isUserAdmin(signInDto.email))
+    if (await this.authService.isUserAdmin(signInDto.email))
       return this.authService.login(signInDto);
   }
 
-  @UseGuards(AuthGuard)
+  @Post('refresh')
+  refreshToken(@Body('refreshToken') refreshToken: string) {
+    if (refreshToken) {
+      return this.authService.refresh(refreshToken);
+    } else throw new UnauthorizedException('Refresh token is required');
+  }
+
   @Get('logout')
+  @UseGuards(AdminAuthGuard)
   logout(@Request() req: any) {
     return this.authService.signOut(req.user.sub);
   }
 
   @Get('check-admin')
-  @UseGuards(AuthGuard)
-  async checkAdmin(@Request() req: any) {
-    return await this.isUserAdmin(req.user.email);
+  @UseGuards(AdminAuthGuard)
+  async checkAdmin() {
+    return true;
   }
 }
