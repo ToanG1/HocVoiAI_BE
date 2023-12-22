@@ -16,6 +16,7 @@ import { QuestionCommentModule } from './modules/question-comment/question-comme
 import { MailSenderModule } from './modules/mail-sender/mail-sender.module';
 import { NoteModule } from './modules/note/note.module';
 import { RatingModule } from './modules/rating/rating.module';
+import { RoadmapAdminController } from './modules/roadmap/roadmap.admin.controller';
 
 import configuration from './config/configuration';
 
@@ -40,7 +41,7 @@ import configuration from './config/configuration';
     NoteModule,
     RatingModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, RoadmapAdminController],
   providers: [AppService],
 })
 export class AppModule {}
