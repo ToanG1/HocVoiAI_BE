@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { PrivilegeController } from './privilege.controller';
-import { PrivilegeService } from './privilege.service';
+import { PrivilegeController } from './user/privilege.controller';
+import { PrivilegeService } from './user/privilege.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
