@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { AuthAdminController } from './auth.admin.controller';
+import { AuthService } from './user/auth.service';
+import { AuthController } from './user/auth.controller';
+import { AuthAdminController } from './admin/auth.admin.controller';
 import { UserModule } from 'src/modules/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';

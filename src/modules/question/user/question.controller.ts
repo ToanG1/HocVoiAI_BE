@@ -13,8 +13,8 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
-import { CreateQuestionDto } from './dto/create-question.dto';
-import { UpdateQuestionDto } from './dto/update-question.dto';
+import { CreateQuestionDto } from '../dto/create-question.dto';
+import { UpdateQuestionDto } from '../dto/update-question.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 
 import { PaginationInterceptor } from 'src/interceptors/pagination.interceptors';

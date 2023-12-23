@@ -10,8 +10,8 @@ import {
   Request,
 } from '@nestjs/common';
 import { QuestionCommentService } from './question-comment.service';
-import { CreateQuestionCommentDto } from './dto/create-question-comment.dto';
-import { UpdateQuestionCommentDto } from './dto/update-question-comment.dto';
+import { CreateQuestionCommentDto } from '../dto/create-question-comment.dto';
+import { UpdateQuestionCommentDto } from '../dto/update-question-comment.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 
 @Controller('api/question-comment')

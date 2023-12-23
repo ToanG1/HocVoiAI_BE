@@ -11,10 +11,10 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { NoteService } from './note.service';
-import { CreateNoteDto } from './dto/create-note.dto';
-import { UpdateNoteDto } from './dto/update-note.dto';
+import { CreateNoteDto } from '../dto/create-note.dto';
+import { UpdateNoteDto } from '../dto/update-note.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
-import { GoalBranchService } from '../goal-branch/goal-branch.service';
+import { GoalBranchService } from '../../goal-branch/user/goal-branch.service';
 
 @Controller('api/note')
 export class NoteController {

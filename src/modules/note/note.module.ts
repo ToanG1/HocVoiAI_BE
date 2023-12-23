@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { NoteService } from './note.service';
-import { NoteController } from './note.controller';
+import { NoteService } from './user/note.service';
+import { NoteController } from './user/note.controller';
 import { PrismaService } from '../prisma/prisma.service';
-import { GoalBranchService } from '../goal-branch/goal-branch.service';
+import { GoalBranchService } from '../goal-branch/user/goal-branch.service';
 
 @Module({
   controllers: [NoteController],

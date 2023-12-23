@@ -17,7 +17,7 @@ import { RoadmapService } from './roadmap.service';
 import { CreateRoadmapDto } from '../dto/create-roadmap.dto';
 import { UpdateRoadmapDto } from '../dto/update-roadmap.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
-import { PrivilegeService } from '../../privilege/privilege.service';
+import { PrivilegeService } from '../../privilege/user/privilege.service';
 import { Privilege } from '../../../utils/enums/privilege';
 import { PaginationInterceptor } from 'src/interceptors/pagination.interceptors';
 

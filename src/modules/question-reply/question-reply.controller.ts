@@ -15,7 +15,7 @@ import { QuestionReplyService } from './question-reply.service';
 import { CreateQuestionReplyDto } from './dto/create-question-reply.dto';
 import { UpdateQuestionReplyDto } from './dto/update-question-reply.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
-import { QuestionService } from '../question/question.service';
+import { QuestionService } from '../question/user/question.service';
 
 @Controller('api/question-reply')
 export class QuestionReplyController {
