@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRoadmapDto } from './dto/create-roadmap.dto';
-import { UpdateRoadmapDto } from './dto/update-roadmap.dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { CreateRoadmapDto } from '../dto/create-roadmap.dto';
+import { UpdateRoadmapDto } from '../dto/update-roadmap.dto';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Privilege } from 'src/utils/enums/privilege';
-import { PrivilegeService } from '../privilege/privilege.service';
+import { PrivilegeService } from '../../privilege/privilege.service';
 
 @Injectable()
 export class RoadmapService {

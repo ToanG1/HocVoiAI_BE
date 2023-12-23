@@ -1,16 +1,16 @@
 import { Controller, Get, UseGuards, UseInterceptors } from '@nestjs/common';
-import { CategoryService } from './category.service';
 import { AdminAuthGuard } from 'src/guard/adminAuth.guard';
+import { QuestionService } from './question.service';
 import { PaginationInterceptor } from 'src/interceptors/pagination.interceptors';
 
-@Controller('api/admin/category')
+@Controller('api/admin/question')
 @UseGuards(AdminAuthGuard)
-export class CategoryAdminController {
-  constructor(private readonly categoryService: CategoryService) {}
+export class QuestionAdminController {
+  constructor(private readonly questionService: QuestionService) {}
 
   @Get()
   @UseInterceptors(PaginationInterceptor)
   findAll() {
-    return this.categoryService.findAllByAdmin();
+    return this.questionService.findAllByAdmin();
   }
 }
