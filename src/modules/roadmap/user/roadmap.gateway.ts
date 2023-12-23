@@ -6,8 +6,8 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { AiApiService } from '../ai-api/ai-api.service';
-import { GenRoadmap } from './dto/gen-roadmap.dto';
+import { AiApiService } from '../../ai-api/ai-api.service';
+import { GenRoadmap } from '../dto/gen-roadmap.dto';
 import { JwtService } from '@nestjs/jwt';
 @WebSocketGateway({
   cors: {

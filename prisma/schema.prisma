@@ -91,15 +91,17 @@ model Roadmap {
 model Tag {
   id        Int              @id @default(autoincrement())
   name      String
+  isActived Boolean          @default(false)
   roadmaps  RoadmapDetails[]
   questions Question[]
 }
 
 model Category {
-  id       Int              @id @default(autoincrement())
-  name     String
-  roadmaps RoadmapDetails[]
-  question Question[]
+  id        Int              @id @default(autoincrement())
+  name      String
+  isActived Boolean          @default(false)
+  roadmaps  RoadmapDetails[]
+  question  Question[]
 }
 
 model RoadmapDetails {
@@ -143,18 +145,19 @@ model Rating {
 }
 
 model Question {
-  id        Int               @id @default(autoincrement())
-  title     String
-  content   String
-  user      User              @relation(fields: [userId], references: [uuid])
-  userId    String
-  tags      Tag[]
-  category  Category?         @relation(fields: [cateId], references: [id])
-  cateId    Int?
-  replies   QuestionReply[]
-  comments  QuestionComment[]
-  createdAt DateTime
-  updateAt  DateTime
+  id          Int               @id @default(autoincrement())
+  title       String
+  content     String
+  user        User              @relation(fields: [userId], references: [uuid])
+  userId      String
+  tags        Tag[]
+  category    Category?         @relation(fields: [cateId], references: [id])
+  cateId      Int?
+  isActivated Boolean           @default(false)
+  replies     QuestionReply[]
+  comments    QuestionComment[]
+  createdAt   DateTime
+  updateAt    DateTime
 }
 
 model QuestionReply {
@@ -167,7 +170,7 @@ model QuestionReply {
   createdAt  DateTime
   updateAt   DateTime
 
-  questionComments QuestionComment[] 
+  questionComments QuestionComment[]
 }
 
 model QuestionComment {

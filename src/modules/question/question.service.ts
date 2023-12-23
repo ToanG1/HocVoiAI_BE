@@ -62,6 +62,9 @@ export class QuestionService {
 
   findAll() {
     return this.prismaService.question.findMany({
+      where: {
+        isActivated: true,
+      },
       include: {
         user: {
           select: {
@@ -69,6 +72,25 @@ export class QuestionService {
           },
         },
         category: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+  findAllByAdmin() {
+    return this.prismaService.question.findMany({
+      include: {
+        user: {
+          select: {
+            uuid: true,
+          },
+        },
+        category: {
+          select: {
+            name: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',

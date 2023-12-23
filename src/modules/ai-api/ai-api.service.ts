@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
 import { AI_URL } from './ai-url.constant';
-import { RoadmapService } from '../roadmap/roadmap.service';
+import { RoadmapService } from '../roadmap/user/roadmap.service';
 import { CreateRoadmapDto } from './dto/create-roadmap.dto';
 @Injectable()
 export class AiApiService {

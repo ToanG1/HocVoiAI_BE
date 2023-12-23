@@ -174,4 +174,14 @@ export class UserService {
 
     this.prismaService.$transaction([deleteToken, updatePassword]);
   }
+
+  async findAll() {
+    const users = await this.prismaService.user.findMany();
+
+    return users.map((user) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...result } = user;
+      return result;
+    });
+  }
 }

@@ -3,6 +3,7 @@ import {
   HttpStatus,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -30,6 +31,12 @@ export class AuthService {
     private prismaService: PrismaService,
     private mailService: MailSenderService,
   ) {}
+
+  async isUserAdmin(email: string) {
+    const user = await this.usersService.findOneByEmail(email);
+    if (user.isAdmin) return true;
+    else throw new UnauthorizedException('User is not admin');
+  }
 
   async login(loginDto: LoginDto) {
     const user = await this.usersService.findOneByEmail(loginDto.email);
