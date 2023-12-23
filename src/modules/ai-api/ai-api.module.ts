@@ -3,7 +3,7 @@ import { AiApiService } from './ai-api.service';
 import { HttpModule } from '@nestjs/axios';
 import { RoadmapService } from '../roadmap/user/roadmap.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { PrivilegeService } from '../privilege/privilege.service';
+import { PrivilegeService } from '../privilege/user/privilege.service';
 
 @Module({
   imports: [HttpModule],

@@ -7,8 +7,8 @@ import {
   Request,
   UnauthorizedException,
 } from '@nestjs/common';
-import { LoginDto } from './authDto/login.dto';
-import { AuthService } from './auth.service';
+import { LoginDto } from '../authDto/login.dto';
+import { AuthService } from '../user/auth.service';
 import { AdminAuthGuard } from 'src/guard/adminAuth.guard';
 
 @Controller('api/admin/auth')

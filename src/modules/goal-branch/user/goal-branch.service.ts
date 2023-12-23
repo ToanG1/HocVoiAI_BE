@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGoalBranchDto } from './dto/create-goal-branch.dto';
-import { UpdateGoalBranchDto } from './dto/update-goal-branch.dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { CreateGoalBranchDto } from '../dto/create-goal-branch.dto';
+import { UpdateGoalBranchDto } from '../dto/update-goal-branch.dto';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class GoalBranchService {

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { QuestionCommentService } from './question-comment.service';
-import { QuestionCommentController } from './question-comment.controller';
+import { QuestionCommentService } from './user/question-comment.service';
+import { QuestionCommentController } from './user/question-comment.controller';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Module({

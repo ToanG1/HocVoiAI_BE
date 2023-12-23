@@ -14,9 +14,9 @@ import {
 } from '@nestjs/common';
 import { GoalBranchService } from './goal-branch.service';
 import { AuthGuard } from 'src/guard/auth.guard';
-import { CreateGoalBranchDto } from './dto/create-goal-branch.dto';
-import { GoalsService } from '../goals/goals.service';
-import { UpdateGoalBranchDto } from './dto/update-goal-branch.dto';
+import { CreateGoalBranchDto } from '../dto/create-goal-branch.dto';
+import { GoalsService } from '../../goals/user/goals.service';
+import { UpdateGoalBranchDto } from '../dto/update-goal-branch.dto';
 
 @Controller('api/goal-branch')
 export class GoalBranchController {

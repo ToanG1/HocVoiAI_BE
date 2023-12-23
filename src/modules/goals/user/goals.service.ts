@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGoalDto } from './dto/create-goal.dto';
-import { UpdateGoalDto } from './dto/update-goal.dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { CreateGoalDto } from '../dto/create-goal.dto';
+import { UpdateGoalDto } from '../dto/update-goal.dto';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class GoalsService {

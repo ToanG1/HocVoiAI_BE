@@ -12,8 +12,8 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { GoalsService } from './goals.service';
-import { CreateGoalDto } from './dto/create-goal.dto';
-import { UpdateGoalDto } from './dto/update-goal.dto';
+import { CreateGoalDto } from '../dto/create-goal.dto';
+import { UpdateGoalDto } from '../dto/update-goal.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 
 @Controller('api/goal')

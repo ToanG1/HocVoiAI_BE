@@ -5,16 +5,16 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { UserService } from '../../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { LoginDto } from './authDto/login.dto';
-import { CreateUserDto } from '../user/userDTO/createUser.dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { LoginDto } from '../authDto/login.dto';
+import { CreateUserDto } from '../../user/userDTO/createUser.dto';
+import { PrismaService } from '../../prisma/prisma.service';
 
 import * as dayjs from 'dayjs';
 import { TokenType } from 'src/utils/enums/token-type';
-import { MailSenderService } from '../mail-sender/mail-sender.service';
+import { MailSenderService } from '../../mail-sender/mail-sender.service';
 import { randomUUID } from 'crypto';
 
 const JWT_ACCESS_TOKEN_EXPIRATION_TIME = '5m';
