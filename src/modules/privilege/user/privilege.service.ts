@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Privilege } from 'src/utils/enums/privilege';
+import { Privilege } from 'src/utils/enums/privilege.enum';
 
 @Injectable()
 export class PrivilegeService {

@@ -1,14 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateRoadmapDto } from '../dto/update-roadmap.dto';
 import { PrismaService } from '../../prisma/prisma.service';
-import { PrivilegeService } from '../../privilege/user/privilege.service';
 
 @Injectable()
 export class RoadmapAdminService {
-  constructor(
-    private prismaService: PrismaService,
-    private readonly privilegeService: PrivilegeService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   getTag(tagId: number[]) {
     if (!tagId) return undefined;
@@ -71,34 +67,6 @@ export class RoadmapAdminService {
     });
   }
 
-  async findRelativeRoadmap(id: string) {
-    const rm = await this.findOne(id);
-    return await this.prismaService.roadmapDetails.findMany({
-      where: {
-        category: {
-          id: rm.category.id,
-        },
-        isPublic: true,
-      },
-      select: {
-        id: true,
-        title: true,
-        avatar: true,
-        rating: true,
-        description: true,
-        level: true,
-        duration: true,
-        topics: true,
-        tags: true,
-        language: true,
-        category: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-  }
-
   async findOne(id: string) {
     try {
       const rm = await this.prismaService.roadmapDetails.findUnique({
@@ -118,68 +86,58 @@ export class RoadmapAdminService {
   }
 
   async update(id: string, updateRoadmapDto: UpdateRoadmapDto) {
-    try {
-      // Get tags and category which is legal
-      const tags = await this.getTag(updateRoadmapDto.tagId);
-      const category = await this.getCategory(updateRoadmapDto.categoryId);
+    // Get tags and category which is legal
+    const tags = await this.getTag(updateRoadmapDto.tagId);
+    const category = await this.getCategory(updateRoadmapDto.categoryId);
 
-      // Check if tag id is legal and connect with roadmap
-      return this.prismaService.roadmapDetails.update({
-        where: {
-          id: id,
+    // Check if tag id is legal and connect with roadmap
+    return this.prismaService.roadmapDetails.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title: updateRoadmapDto.title || undefined,
+        avatar: updateRoadmapDto.avatar || undefined,
+        description: updateRoadmapDto.description || undefined,
+        level: updateRoadmapDto.level || undefined,
+        duration: updateRoadmapDto.duration || undefined,
+        topics: updateRoadmapDto.topics || undefined,
+        language: updateRoadmapDto.language || undefined,
+        isPublic: updateRoadmapDto.isPublic || undefined,
+        tags: {
+          connect: tags,
         },
-        data: {
-          title: updateRoadmapDto.title || undefined,
-          avatar: updateRoadmapDto.avatar || undefined,
-          description: updateRoadmapDto.description || undefined,
-          level: updateRoadmapDto.level || undefined,
-          duration: updateRoadmapDto.duration || undefined,
-          topics: updateRoadmapDto.topics || undefined,
-          language: updateRoadmapDto.language || undefined,
-          isPublic: updateRoadmapDto.isPublic || undefined,
-          tags: {
-            connect: tags,
-          },
-          category: {
-            connect: category,
-          },
-          roadmap: {
-            update: {
-              where: {
-                detailsId: id,
-              },
-              data: {
-                title: updateRoadmapDto.title || undefined,
-                topics: updateRoadmapDto.milestones || undefined,
-                updatedAt: new Date(),
-              },
+        category: {
+          connect: category,
+        },
+        roadmap: {
+          update: {
+            where: {
+              detailsId: id,
+            },
+            data: {
+              title: updateRoadmapDto.title || undefined,
+              topics: updateRoadmapDto.milestones || undefined,
+              updatedAt: new Date(),
             },
           },
-          type: updateRoadmapDto.type || undefined,
-          updateAt: new Date(),
         },
-      });
-    } catch (error) {
-      return error;
-    }
+        type: updateRoadmapDto.type || undefined,
+        updateAt: new Date(),
+      },
+    });
   }
 
   async remove(id: string) {
-    try {
-      // Remove all privilege to this roadmap details and set isPublic to false
-      const removePrivilege = this.privilegeService.removeAllPrivileges(id);
-      const setPrivate = this.prismaService.roadmapDetails.update({
-        where: {
-          id: id,
-        },
-        data: {
-          isPublic: false,
-        },
-      });
-      await this.prismaService.$transaction([removePrivilege, setPrivate]);
-      return 'success';
-    } catch (error) {
-      return error.message;
-    }
+    await this.prismaService.roadmapDetails.update({
+      where: {
+        id: id,
+      },
+      data: {
+        isPublic: false,
+        isActivated: false,
+      },
+    });
+    return 'success';
   }
 }

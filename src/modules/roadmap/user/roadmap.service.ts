@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoadmapDto } from '../dto/create-roadmap.dto';
 import { UpdateRoadmapDto } from '../dto/update-roadmap.dto';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Privilege } from 'src/utils/enums/privilege';
+import { Privilege } from 'src/utils/enums/privilege.enum';
 import { PrivilegeService } from '../../privilege/user/privilege.service';
 
 @Injectable()
@@ -140,6 +140,7 @@ export class RoadmapService {
     return await this.prismaService.roadmapDetails.findMany({
       where: {
         isPublic: true,
+        isActivated: true,
       },
       include: {
         category: true,
@@ -157,6 +158,8 @@ export class RoadmapService {
           contains: title,
           mode: 'insensitive',
         },
+        isPublic: true,
+        isActivated: true,
       },
       include: {
         category: true,
@@ -175,6 +178,7 @@ export class RoadmapService {
           id: rm.category.id,
         },
         isPublic: true,
+        isActivated: true,
       },
       select: {
         id: true,
@@ -200,6 +204,7 @@ export class RoadmapService {
       const rm = await this.prismaService.roadmapDetails.findUnique({
         where: {
           id: id,
+          isActivated: true,
         },
         include: {
           roadmap: true,
