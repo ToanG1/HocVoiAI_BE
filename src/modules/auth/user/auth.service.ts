@@ -13,11 +13,11 @@ import { CreateUserDto } from '../../user/userDTO/createUser.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 
 import * as dayjs from 'dayjs';
-import { TokenType } from 'src/utils/enums/token-type';
+import { TokenType } from 'src/utils/enums/token-type.enum';
 import { MailSenderService } from '../../mail-sender/mail-sender.service';
 import { randomUUID } from 'crypto';
 
-const JWT_ACCESS_TOKEN_EXPIRATION_TIME = '5m';
+const JWT_ACCESS_TOKEN_EXPIRATION_TIME = '30m';
 const JWT_REFRESH_TOKEN_EXPIRATION_TIME = '7d';
 
 const getRefreshExpiry = () => dayjs().add(7, 'd').toDate();
@@ -182,7 +182,6 @@ export class AuthService {
       return this.prismaService
         .$transaction([deleteToken, activateUser])
         .then(() => {
-          console.log(activateUser);
           return true;
         });
     } catch (error) {

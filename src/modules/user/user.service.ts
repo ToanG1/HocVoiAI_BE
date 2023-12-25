@@ -11,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from '../user/userDTO/createUser.dto';
 import { UpdateUserDto } from '../user/userDTO/updateUser.dto';
-import { TokenType } from 'src/utils/enums/token-type';
+import { TokenType } from 'src/utils/enums/token-type.enum';
 
 const Rounds = 10;
 

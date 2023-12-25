@@ -16,6 +16,7 @@ import { QuestionCommentModule } from './modules/question-comment/question-comme
 import { MailSenderModule } from './modules/mail-sender/mail-sender.module';
 import { NoteModule } from './modules/note/note.module';
 import { RatingModule } from './modules/rating/rating.module';
+import { ReportModule } from './modules/report/report.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -38,6 +39,7 @@ import configuration from './config/configuration';
     MailSenderModule,
     NoteModule,
     RatingModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],

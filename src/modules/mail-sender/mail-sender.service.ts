@@ -36,4 +36,21 @@ export class MailSenderService {
         console.log(err);
       });
   }
+
+  public sendNotificationEmail(email: string, subject, title, content): void {
+    this.mailerService
+      .sendMail({
+        to: email,
+        from: 'toandinh01675@gmail.com',
+        subject: subject,
+        template: 'notification-from-admin',
+        context: {
+          title: title,
+          content: content,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }

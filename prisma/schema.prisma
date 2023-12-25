@@ -29,6 +29,7 @@ model User {
   token     Token[]
   goal      Goal[]
   ratings   Rating[]
+  report    Report[]
 }
 
 model Token {
@@ -105,7 +106,7 @@ model Category {
 }
 
 model RoadmapDetails {
-  id          String      @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   avatar      String
   rating      Int
@@ -117,15 +118,15 @@ model RoadmapDetails {
   tags        Tag[]
   language    String
   isPublic    Boolean
-  category    Category?   @relation(fields: [categoryId], references: [id])
+  category    Category?    @relation(fields: [categoryId], references: [id])
   categoryId  Int?
   roadmap     Roadmap?
   privileges  Privilege[]
   type        Int
   createdAt   DateTime
   updateAt    DateTime
-
-  goalBranch GoalBranch[]
+  isActivated Boolean      @default(true)
+  goalBranch  GoalBranch[]
 }
 
 model Rating {
@@ -218,4 +219,17 @@ model Note {
 
   createdAt DateTime
   updateAt  DateTime
+}
+
+model Report {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [uuid])
+  userId     String
+  type       String
+  objectId   String
+  reason     String
+  content    String
+  isAccepted Boolean  @default(false)
+  isSolved   Boolean  @default(false)
+  createdAt  DateTime
 }

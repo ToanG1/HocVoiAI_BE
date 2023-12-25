@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { RatingType } from 'src/utils/enums/rating-type';
+import { RatingType } from 'src/utils/enums/rating-type.enum';
 
 @Injectable()
 export class RatingService {
@@ -92,9 +92,7 @@ export class RatingService {
     const totalStar =
       ratings.reduce((sum, rating) => sum + rating.star, 0) + star;
 
-    console.log(totalStar + ' ' + ratings.length);
     const rating = totalStar / (ratings.length + 1);
-    console.log(rating);
 
     await this.prismaService.roadmapDetails.update({
       where: {
