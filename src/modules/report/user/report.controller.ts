@@ -12,7 +12,7 @@ import { ReportService } from './report.service';
 import { CreateReportDto } from '../dto/create-report.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 
-@Controller('report')
+@Controller('api/report')
 @UseGuards(AuthGuard)
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
