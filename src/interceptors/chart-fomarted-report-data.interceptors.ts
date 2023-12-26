@@ -9,7 +9,7 @@ import { concatMap } from 'rxjs/operators';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
-class ChartFormattedRoadmapDataInterceptor implements NestInterceptor {
+class ChartFormattedReportDataInterceptor implements NestInterceptor {
   constructor(private readonly prismaService: PrismaService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -21,17 +21,17 @@ class ChartFormattedRoadmapDataInterceptor implements NestInterceptor {
           case 'month':
             return from(this.formatChartByMonthData(data));
 
-          case 'category':
-            return from(this.formatChartByCategoryData(data));
+          case 'report-type':
+            return from(this.formatChartByTypeData(data));
 
-          case 'roadmap-level':
-            return from(this.formatChartByRoadmapLevelData(data));
+          case 'progress':
+            return from(this.formatChartByProgressData(data));
 
-          case 'roadmap-language':
-            return from(this.formatChartByRoadmapLanguageData(data));
+          // case 'roadmap-language':
+          //   return from(this.formatChartByRoadmapLanguageData(data));
 
-          case 'roadmap-type':
-            return from(this.formatChartByRoadmapTypeData(data));
+          // case 'roadmap-type':
+          //   return from(this.formatChartByRoadmapTypeData(data));
 
           default:
             return from(this.formatChartByMonthData(data));
@@ -73,16 +73,17 @@ class ChartFormattedRoadmapDataInterceptor implements NestInterceptor {
     });
   }
 
-  private async formatChartByCategoryData(data) {
-    const categories = await this.prismaService.category.findMany({
-      select: {
-        name: true,
-      },
-    });
-    const labels = categories.map((item) => item.name);
+  private formatChartByTypeData(data) {
+    const labels = [
+      'USER_REPORT',
+      'ROADMAP_REPORT',
+      'QUESTION_REPORT',
+      'QUESTION_REPLY_REPORT',
+      'QUESTION_COMMENT_REPORT',
+    ];
     const datasets = [
       {
-        label: 'Roadmap created by categories',
+        label: 'Roadmap created by type',
         data: Array(labels.length).fill(0),
         backgroundColor: [
           'rgba(255, 99, 132, 0.5)',
@@ -96,43 +97,41 @@ class ChartFormattedRoadmapDataInterceptor implements NestInterceptor {
       },
     ];
     data.forEach((item) => {
-      const index = labels.indexOf(item.category.name);
+      const index = labels.indexOf(item.type);
       datasets[0].data[index]++;
     });
-    return {
+    return of({
       labels,
       datasets,
-    };
+    });
   }
 
-  private formatChartByRoadmapLevelData(data) {
-    const levels = ['unset', 'beginner', 'intermediate', 'advanced'];
+  private formatChartByProgressData(data) {
+    const labels = ['Un-Accepted', 'Accepted', 'Solved'];
     const datasets = [
       {
         label: 'Roadmap by level',
-        data: Array(levels.length).fill(0),
+        data: Array(labels.length).fill(0),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
         ],
         borderWidth: 1,
       },
     ];
     data.forEach((item) => {
-      const index = levels.indexOf(item.level);
-      datasets[0].data[index !== -1 ? index : 0]++;
+      const index = item.isAccepted ? (item.isSolved ? 2 : 1) : 0;
+      datasets[0].data[index]++;
     });
 
     return of({
-      labels: levels,
+      labels,
       datasets,
     });
   }
@@ -199,4 +198,4 @@ class ChartFormattedRoadmapDataInterceptor implements NestInterceptor {
   }
 }
 
-export { ChartFormattedRoadmapDataInterceptor };
+export { ChartFormattedReportDataInterceptor };
