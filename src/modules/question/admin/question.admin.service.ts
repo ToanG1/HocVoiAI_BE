@@ -17,4 +17,19 @@ export class QuestionAdminService {
       },
     });
   }
+
+  findOneByAdmin(id: number) {
+    return this.prismaService.question.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
+      },
+    });
+  }
 }

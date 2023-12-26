@@ -59,13 +59,16 @@ export class RoadmapAdminController {
   remove(@Param('id') id: string) {
     return this.roadmapService.remove(id).then(async (res) => {
       const owners = await this.privilegeService.getRoadmapOwnerPrivilege(id);
+      // const user = await this.roadmapService.findOne(id);
       owners.map((owner) => {
+        //start
         this.mailSenderService.sendNotificationEmail(
-          owner.user.email,
+          owner.user.email, //user.email
           `Roadmap ${id} has been banned due to our policy`,
           `Your roadmap with id ${id} has been banned due to our policy`,
           'Contact our support team for more information',
         );
+        //end
       });
       return res;
     });
