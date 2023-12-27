@@ -1,4 +1,4 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsBoolean } from 'class-validator';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateUserDto } from './createUser.dto';
 
@@ -7,6 +7,9 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'avatar string of the user',
     type: String,
   })
+  @IsBoolean()
+  isActivated: boolean;
+
   @IsString()
   @IsOptional()
   avatar: string;
