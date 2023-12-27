@@ -57,7 +57,6 @@ export class UserAdminService {
       where: {
         uuid: uuid,
       },
-      
           select: {
             email: true,
           },

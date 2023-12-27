@@ -27,6 +27,7 @@ export class UserAdminController {
   getChartData() {
     return this.userService.findAll();
   }
+
   @Patch(':id')
   async update(@Param('id') id: string,@Body() updateUserDto: UpdateUserDto) {
     const owner= await this.userAdminService.findOneByAdmin(id);
@@ -35,15 +36,13 @@ export class UserAdminController {
     .then((res) => {
   
       this.mailSenderService.sendNotificationEmail(
-        owner.email, //user.email
+        owner.email, 
         `User ${id} has been updated due to our policy`,
         `Your User with id ${id} has been updated due to our policy`,
         'Contact our support team for more information',
       );
       return res;
     });
-    
-   
   }
   
   @Delete(':id')
@@ -55,7 +54,6 @@ export class UserAdminController {
     
     return this.userAdminService.ban(id)
     .then((res) => {
-  
       this.mailSenderService.sendNotificationEmail(
         owner.email, 
         `User ${id} has been baned due to our policy`,

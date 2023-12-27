@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
+import { CreateCategoryDto } from '../dto/create-category.dto';
 
 @Injectable()
 export class CategoryAdminService {
@@ -9,6 +10,16 @@ export class CategoryAdminService {
   findAllByAdmin() {
     return this.prismaService.category.findMany();
   }
+  
+  create(data: CreateCategoryDto){
+    return this.prismaService.category.create({
+      data:{
+        name: data.name,
+        isActived: false,
+      }
+    })
+  }
+
   update(id: number, data: UpdateCategoryDto) {
     return this.prismaService.category.update({
       where: {
