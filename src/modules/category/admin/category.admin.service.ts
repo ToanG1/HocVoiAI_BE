@@ -9,7 +9,6 @@ export class CategoryAdminService {
   findAllByAdmin() {
     return this.prismaService.category.findMany();
   }
-
   update(id: number, data: UpdateCategoryDto) {
     return this.prismaService.category.update({
       where: {
@@ -21,6 +20,7 @@ export class CategoryAdminService {
       },
     });
   }
+  
 
   ban(id: number) {
     return this.prismaService.category.update({
@@ -32,4 +32,5 @@ export class CategoryAdminService {
       },
     });
   }
+  
 }

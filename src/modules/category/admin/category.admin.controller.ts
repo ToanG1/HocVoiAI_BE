@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -24,7 +25,8 @@ export class CategoryAdminController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, updateCategoryDto: UpdateCategoryDto) {
+  update(@Param('id') id: string,@Body() updateCategoryDto: UpdateCategoryDto) {
+    console.log(updateCategoryDto)
     return this.categoryService.update(Number(id), updateCategoryDto);
   }
 
