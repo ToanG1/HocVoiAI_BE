@@ -12,15 +12,11 @@ import { AdminAuthGuard } from 'src/guard/adminAuth.guard';
 import { PaginationInterceptor } from 'src/interceptors/pagination.interceptors';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
 import { CategoryAdminService } from './category.admin.service';
-import { MailSenderService } from 'src/modules/mail-sender/mail-sender.service';
 
 @Controller('api/admin/category')
 @UseGuards(AdminAuthGuard)
 export class CategoryAdminController {
-  constructor(
-    private readonly categoryService: CategoryAdminService,
-    private readonly mailSenderService: MailSenderService,
-  ) {}
+  constructor(private readonly categoryService: CategoryAdminService) {}
 
   @Get()
   @UseInterceptors(PaginationInterceptor)
