@@ -1,11 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
-import { AI_URL } from './ai-url.constant';
-import { RoadmapService } from '../roadmap/user/roadmap.service';
-import { CreateRoadmapDto } from './dto/create-roadmap.dto';
+import { AI_URL } from '../ai-url.constant';
+import { RoadmapService } from '../../roadmap/user/roadmap.service';
+import { CreateRoadmapDto } from '../dto/create-roadmap.dto';
 @Injectable()
-export class AiApiService {
+export class RoadmapAiApiService {
   constructor(
     private readonly httpService: HttpService,
     private readonly roadmapService: RoadmapService,
@@ -19,16 +19,48 @@ export class AiApiService {
   ) {
     try {
       const roadmap = await this.callAIToGen(topic, level, language);
+
+      //get suggestions
+      const milestones = await Promise.all(
+        roadmap.milestones.map(async (milestone) => {
+          const content = await Promise.all(
+            milestone.content.map(async (content) => {
+              const suggestion = await this.callAIToSuggest(
+                topic,
+                content.name,
+                language,
+              );
+
+              console.log(suggestion);
+
+              return {
+                ...content,
+                suggestion,
+              };
+            }),
+          );
+
+          console.log(content);
+
+          return {
+            ...milestone,
+            content: content,
+          };
+        }),
+      );
+
+      console.log(milestones);
+
       const createRoadmapDto: CreateRoadmapDto = {
         title: roadmap.title,
         description: roadmap.description,
-        level: roadmap.level,
+        level: level,
         duration: roadmap.duration,
         topics: roadmap.topics,
-        language: roadmap.language,
+        language: language,
         isPublic: false,
         type: 1,
-        milestones: JSON.stringify(roadmap.milestones),
+        milestones: JSON.stringify(milestones),
         avatar: '',
         tagId: [],
         categoryId: 1,
@@ -54,15 +86,13 @@ export class AiApiService {
     return JSON.parse(object);
   }
 
-  async callAIToSuggest(topic: string, level: string, language: string) {
+  async callAIToSuggest(topic: string, content: string, language: string) {
     const { data } = await this.httpService.axiosRef.post(`${AI_URL}/suggest`, {
-      topic,
-      level,
-      language,
+      topic: topic,
+      content: content,
+      language: language,
     });
 
-    const regex = /\,(?!\s*?[\{\[\"\'\w])/g;
-    const object = data.response.replace(regex, '');
-    return JSON.parse(object);
+    return data.response;
   }
 }

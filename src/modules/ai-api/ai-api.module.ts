@@ -1,12 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AiApiService } from './ai-api.service';
 import { HttpModule } from '@nestjs/axios';
 import { RoadmapService } from '../roadmap/user/roadmap.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrivilegeService } from '../privilege/user/privilege.service';
+import { RoadmapAiApiService } from './roadmap/roadmap-ai-api.service';
+import { ChatAiApiService } from './chat/chat-ai-api.service';
 
 @Module({
   imports: [HttpModule],
-  providers: [AiApiService, RoadmapService, PrismaService, PrivilegeService],
+  providers: [
+    RoadmapService,
+    PrismaService,
+    PrivilegeService,
+    RoadmapAiApiService,
+    ChatAiApiService,
+  ],
 })
 export class AiApiModule {}

@@ -57,6 +57,7 @@ export class RoadmapController {
 
   @Get('/user')
   @UseGuards(AuthGuard)
+  @UseInterceptors(PaginationInterceptor)
   async findManyOfUser(@Request() req: any) {
     return await this.privilegeService.getAllPrivilege(req.user.sub);
   }

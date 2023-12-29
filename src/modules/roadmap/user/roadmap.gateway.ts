@@ -6,19 +6,15 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { AiApiService } from '../../ai-api/ai-api.service';
 import { GenRoadmap } from '../dto/gen-roadmap.dto';
-import { JwtService } from '@nestjs/jwt';
+import { RoadmapAiApiService } from 'src/modules/ai-api/roadmap/roadmap-ai-api.service';
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
 export class RoadmapGateway {
-  constructor(
-    private readonly aiService: AiApiService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private readonly aiService: RoadmapAiApiService) {}
 
   @WebSocketServer()
   server: Server;

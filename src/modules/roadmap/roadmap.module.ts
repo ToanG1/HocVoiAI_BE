@@ -7,7 +7,7 @@ import { RoadmapAdminController } from './admin/roadmap.admin.controller';
 import { PrismaModule } from '../prisma/prisma.module';
 import { PrivilegeService } from '../privilege/user/privilege.service';
 import { PrivilegeAdminService } from '../privilege/admin/admin.privilege.service';
-import { AiApiService } from '../ai-api/ai-api.service';
+import { RoadmapAiApiService } from '../ai-api/roadmap/roadmap-ai-api.service';
 import { HttpModule } from '@nestjs/axios';
 import { RoadmapGateway } from './user/roadmap.gateway';
 
@@ -18,7 +18,7 @@ import { RoadmapGateway } from './user/roadmap.gateway';
     RoadmapAdminService,
     PrivilegeService,
     PrivilegeAdminService,
-    AiApiService,
+    RoadmapAiApiService,
     MailSenderService,
     RoadmapGateway,
   ],

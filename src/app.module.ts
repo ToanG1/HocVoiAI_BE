@@ -17,6 +17,7 @@ import { MailSenderModule } from './modules/mail-sender/mail-sender.module';
 import { NoteModule } from './modules/note/note.module';
 import { RatingModule } from './modules/rating/rating.module';
 import { ReportModule } from './modules/report/report.module';
+import { ChatModule } from './modules/chat/chat.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -40,6 +41,7 @@ import configuration from './config/configuration';
     NoteModule,
     RatingModule,
     ReportModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

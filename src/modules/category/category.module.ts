@@ -7,6 +7,11 @@ import { MailSenderService } from '../mail-sender/mail-sender.service';
 import { CategoryAdminService } from './admin/category.admin.service';
 @Module({
   controllers: [CategoryController, CategoryAdminController],
-  providers: [CategoryService, PrismaService, MailSenderService, CategoryAdminService],
+  providers: [
+    CategoryService,
+    PrismaService,
+    MailSenderService,
+    CategoryAdminService,
+  ],
 })
 export class CategoryModule {}
