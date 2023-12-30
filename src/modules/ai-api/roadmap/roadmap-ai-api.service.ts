@@ -31,8 +31,6 @@ export class RoadmapAiApiService {
                 language,
               );
 
-              console.log(suggestion);
-
               return {
                 ...content,
                 suggestion,
@@ -40,16 +38,12 @@ export class RoadmapAiApiService {
             }),
           );
 
-          console.log(content);
-
           return {
             ...milestone,
             content: content,
           };
         }),
       );
-
-      console.log(milestones);
 
       const createRoadmapDto: CreateRoadmapDto = {
         title: roadmap.title,
