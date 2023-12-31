@@ -4,9 +4,12 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ResponseFormattingInterceptor } from './interceptors/response-formatting.interceptor';
+import { urlencoded, json } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // app.setGlobalPrefix('api');
+
   app.useGlobalPipes(
     new ValidationPipe({
       disableErrorMessages: true,
@@ -35,6 +38,10 @@ async function bootstrap() {
       'http://localhost:5002',
     ],
   });
+
+  //Limit body
+  app.use(json({ limit: '5mb' }));
+  app.use(urlencoded({ extended: true, limit: '5mb' }));
 
   await app.listen(process.env.PORT || 5001);
   console.log(`Application is running on: ${await app.getUrl()}`);

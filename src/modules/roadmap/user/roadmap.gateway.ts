@@ -32,7 +32,6 @@ export class RoadmapGateway {
               item.language,
             )
             .then((res) => {
-              console.log(res);
               this.server.emit('generated', res);
             });
         });
