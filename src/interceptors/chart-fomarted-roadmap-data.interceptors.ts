@@ -41,6 +41,7 @@ class ChartFormattedRoadmapDataInterceptor implements NestInterceptor {
   }
 
   private formatChartByMonthData(data): Observable<any> {
+    console.log(data);
     const labels = [
       'Jan',
       'Feb',

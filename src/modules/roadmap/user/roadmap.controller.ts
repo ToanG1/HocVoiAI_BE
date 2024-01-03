@@ -87,6 +87,7 @@ export class RoadmapController {
     @Request() req: any,
     @Body() updateRoadmapDto: UpdateRoadmapDto,
   ) {
+    console.log(updateRoadmapDto);
     //Check if the user is the owner
     const right = await this.privilegeService.getPrivilege(req.user.sub, rmId);
     if (!right) throw new NotFoundException();

@@ -237,7 +237,7 @@ export class RoadmapService {
           duration: updateRoadmapDto.duration || undefined,
           topics: updateRoadmapDto.topics || undefined,
           language: updateRoadmapDto.language || undefined,
-          isPublic: updateRoadmapDto.isPublic || undefined,
+          isPublic: updateRoadmapDto.isPublic || false,
           tags: {
             connect: tags,
           },

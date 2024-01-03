@@ -17,7 +17,7 @@ import { TokenType } from 'src/utils/enums/token-type.enum';
 import { MailSenderService } from '../../mail-sender/mail-sender.service';
 import { randomUUID } from 'crypto';
 
-const JWT_ACCESS_TOKEN_EXPIRATION_TIME = '30m';
+const JWT_ACCESS_TOKEN_EXPIRATION_TIME = '1h';
 const JWT_REFRESH_TOKEN_EXPIRATION_TIME = '7d';
 
 const getRefreshExpiry = () => dayjs().add(7, 'd').toDate();
