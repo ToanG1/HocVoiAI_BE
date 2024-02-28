@@ -53,7 +53,7 @@ class ChartFormattedUserDataInterceptor implements NestInterceptor {
       },
     ];
     data.forEach((item) => {
-      const index = new Date(item.createdAt).getMonth() - 1;
+      const index = new Date(item.createdAt).getMonth();
       datasets[0].data[index]++;
     });
     return of({

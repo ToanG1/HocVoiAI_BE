@@ -141,7 +141,7 @@ export class QuestionService {
     const tags = await this.getTag(updateQuestionDto.tagIds);
     const category = await this.getCategory(updateQuestionDto.categoryId);
 
-    const question = this.prismaService.question.update({
+    const question = await this.prismaService.question.update({
       where: {
         id: qId,
       },
@@ -154,6 +154,7 @@ export class QuestionService {
         category: {
           connect: category,
         },
+        isActivated: false,
         updateAt: new Date(),
       },
     });

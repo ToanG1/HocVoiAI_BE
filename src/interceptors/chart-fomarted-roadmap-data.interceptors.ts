@@ -64,7 +64,7 @@ class ChartFormattedRoadmapDataInterceptor implements NestInterceptor {
       },
     ];
     data.forEach((item) => {
-      const index = new Date(item.createdAt).getMonth() - 1;
+      const index = new Date(item.createdAt).getMonth();
       datasets[0].data[index]++;
     });
     return of({
@@ -167,21 +167,21 @@ class ChartFormattedRoadmapDataInterceptor implements NestInterceptor {
   }
 
   private formatChartByRoadmapTypeData(data) {
-    const labels = [2021, 2022, 2023];
+    const labels = [2022, 2023, 2024];
     const type = [1, 2, 3, 4, 5];
     const datasets = [
       {
-        label: 'Roadmap by type in 2021',
+        label: 'Roadmap by type in 2022',
         data: Array(type.length).fill(0),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
-        label: 'Roadmap by type in 2022',
+        label: 'Roadmap by type in 2023',
         data: Array(type.length).fill(0),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
-        label: 'Roadmap by type in 2023',
+        label: 'Roadmap by type in 2024',
         data: Array(type.length).fill(0),
         backgroundColor: 'rgba(153, 102, 255, 0.5)',
       },
