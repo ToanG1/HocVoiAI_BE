@@ -21,7 +21,7 @@ export class CategoryAdminController {
   constructor(private readonly categoryService: CategoryAdminService) {}
 
   @Post()
-  createCategory( @Body() createCategoryDto:CreateCategoryDto){
+  createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
   @Get()
@@ -31,8 +31,10 @@ export class CategoryAdminController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string,@Body() updateCategoryDto: UpdateCategoryDto) {
-    console.log(updateCategoryDto)
+  update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ) {
     return this.categoryService.update(Number(id), updateCategoryDto);
   }
 

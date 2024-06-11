@@ -8,6 +8,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     type: String,
   })
   @IsBoolean()
+  @IsOptional()
   isActivated: boolean;
 
   @IsString()
