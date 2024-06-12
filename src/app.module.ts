@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
-import { MinioClientModule } from './modules/minio-client/minio-client.module';
 import { ConfigModule } from '@nestjs/config';
 import { RoadmapModule } from './modules/roadmap/roadmap.module';
 import { QuestionModule } from './modules/question/question.module';
@@ -19,11 +18,12 @@ import { RatingModule } from './modules/rating/rating.module';
 import { ReportModule } from './modules/report/report.module';
 import { ChatModule } from './modules/chat/chat.module';
 import configuration from './config/configuration';
+import { S3Module } from './modules/s3/s3.module';
 
 @Module({
   imports: [
     AuthModule,
-    MinioClientModule,
+    S3Module,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

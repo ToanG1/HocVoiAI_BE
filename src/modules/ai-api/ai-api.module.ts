@@ -7,6 +7,7 @@ import { RoadmapAiApiService } from './roadmap/roadmap-ai-api.service';
 import { ChatAiApiService } from './chat/chat-ai-api.service';
 import { DocumentController } from './user/document.controller';
 import { DocumentAiApiService } from './user/document-ai-api.service';
+import { ImageAiApiService } from './image/image-ai-api.service';
 
 @Module({
   controllers: [DocumentController],
@@ -18,6 +19,7 @@ import { DocumentAiApiService } from './user/document-ai-api.service';
     RoadmapAiApiService,
     ChatAiApiService,
     DocumentAiApiService,
+    ImageAiApiService,
   ],
 })
 export class AiApiModule {}
