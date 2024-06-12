@@ -10,6 +10,7 @@ import { PrivilegeAdminService } from '../privilege/admin/admin.privilege.servic
 import { RoadmapAiApiService } from '../ai-api/roadmap/roadmap-ai-api.service';
 import { HttpModule } from '@nestjs/axios';
 import { RoadmapGateway } from './user/roadmap.gateway';
+import { ImageAiApiService } from '../ai-api/image/image-ai-api.service';
 
 @Module({
   controllers: [RoadmapController, RoadmapAdminController],
@@ -19,6 +20,7 @@ import { RoadmapGateway } from './user/roadmap.gateway';
     PrivilegeService,
     PrivilegeAdminService,
     RoadmapAiApiService,
+    ImageAiApiService,
     MailSenderService,
     RoadmapGateway,
   ],

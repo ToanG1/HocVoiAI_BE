@@ -4,11 +4,14 @@ import { Injectable } from '@nestjs/common';
 import { AI_URL } from '../ai-url.constant';
 import { RoadmapService } from '../../roadmap/user/roadmap.service';
 import { CreateRoadmapDto } from '../dto/create-roadmap.dto';
+import { ImageAiApiService } from '../image/image-ai-api.service';
+
 @Injectable()
 export class RoadmapAiApiService {
   constructor(
     private readonly httpService: HttpService,
     private readonly roadmapService: RoadmapService,
+    private readonly imageAiApiService: ImageAiApiService,
   ) {}
 
   async generateRoadmap(
@@ -19,6 +22,10 @@ export class RoadmapAiApiService {
   ) {
     try {
       const roadmap = await this.callAIToGen(topic, level, language);
+
+      const generatedAvatar = await this.imageAiApiService.generateImage(
+        roadmap.avatar,
+      );
 
       //get suggestions
       const milestones = await Promise.all(
@@ -55,7 +62,7 @@ export class RoadmapAiApiService {
         isPublic: false,
         type: 1,
         milestones: JSON.stringify(milestones),
-        avatar: '',
+        avatar: generatedAvatar,
         tagId: [],
         categoryId: 1,
       };
