@@ -1,1 +1,1 @@
-export const AI_URL = 'http://api4ai_service.HVA:5009/api';
+export const AI_URL = 'http://127.0.0.1:5009/api';
