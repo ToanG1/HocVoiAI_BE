@@ -80,7 +80,6 @@ export class QuestionReplyController {
     if (reply.user.uuid !== req.user.sub) {
       throw new ForbiddenException();
     }
-    console.log(reply);
     return this.questionReplyService.remove(+id);
   }
 }

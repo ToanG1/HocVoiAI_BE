@@ -147,40 +147,6 @@ class ChartFormattedQuestionDataInterceptor implements NestInterceptor {
     });
   }
 
-  //TODO: handle luong nguoi quan tam bang cach tinh so luong log do cau hoi
-  // private formatChartByRoadmapTypeData(data) {
-  //   const labels = [2021, 2022, 2023];
-  //   const type = [1, 2, 3, 4, 5];
-  //   const datasets = [
-  //     {
-  //       label: 'Roadmap by type in 2021',
-  //       data: Array(type.length).fill(0),
-  //       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-  //     },
-  //     {
-  //       label: 'Roadmap by type in 2022',
-  //       data: Array(type.length).fill(0),
-  //       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-  //     },
-  //     {
-  //       label: 'Roadmap by type in 2023',
-  //       data: Array(type.length).fill(0),
-  //       backgroundColor: 'rgba(153, 102, 255, 0.5)',
-  //     },
-  //   ];
-
-  //   data.forEach((item) => {
-  //     const index = type.indexOf(item.type);
-  //     const indexYear = labels.indexOf(new Date(item.createdAt).getFullYear());
-  //     datasets[indexYear].data[index]++;
-  //   });
-  //   console.log(datasets);
-  //   return of({
-  //     labels: type,
-  //     datasets,
-  //   });
-  // }
-
   private formatChartIsActivatedData(data) {
     const labels = ['Activated', 'Unactived'];
     const type = [true, false];
