@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { QuestionCommentService } from './question-comment.service';
 import { CreateQuestionCommentDto } from '../dto/create-question-comment.dto';
-import { UpdateQuestionCommentDto } from '../dto/update-question-comment.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 
 @Controller('api/question-comment')
@@ -37,11 +36,8 @@ export class QuestionCommentController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateQuestionCommentDto: UpdateQuestionCommentDto,
-  ) {
-    return this.questionCommentService.update(+id, updateQuestionCommentDto);
+  update(@Param('id') id: string) {
+    return this.questionCommentService.update(+id);
   }
 
   @Delete(':id')

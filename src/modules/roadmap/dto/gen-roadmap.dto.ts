@@ -9,6 +9,8 @@ class topic {
 
   @IsNotEmpty()
   language: string = 'english';
+
+  type: number = 1;
 }
 
 export class GenRoadmap {
