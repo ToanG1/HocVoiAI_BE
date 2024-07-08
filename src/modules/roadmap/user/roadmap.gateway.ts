@@ -30,6 +30,8 @@ export class RoadmapGateway {
               item.topic,
               item.level,
               item.language,
+              item.type,
+              item.categoryId,
             )
             .then((res) => {
               this.server.emit('generated', res);

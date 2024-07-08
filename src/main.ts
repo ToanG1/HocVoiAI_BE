@@ -36,7 +36,12 @@ async function bootstrap() {
       'http://localhost:3000',
       'http://localhost:3001',
       'http://localhost:5002',
+      'http://hva-fe-lb-1873420951.ap-southeast-1.elb.amazonaws.com',
+      'https://hva-fe-lb-1873420951.ap-southeast-1.elb.amazonaws.com',
     ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+    credentials: true,
   });
 
   //Limit body

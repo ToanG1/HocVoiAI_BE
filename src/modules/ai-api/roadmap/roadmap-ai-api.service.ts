@@ -19,9 +19,11 @@ export class RoadmapAiApiService {
     topic: string,
     level: string,
     language: string,
+    type: number,
+    categoryId: number,
   ) {
     try {
-      const roadmap = await this.callAIToGen(topic, level, language);
+      const roadmap = await this.callAIToGen(topic, level, language, type);
 
       const generatedAvatar = await this.imageAiApiService.generateImage(
         roadmap.avatar,
@@ -30,25 +32,36 @@ export class RoadmapAiApiService {
       //get suggestions
       const milestones = await Promise.all(
         roadmap.milestones.map(async (milestone) => {
-          const content = await Promise.all(
-            milestone.content.map(async (content) => {
-              const suggestion = await this.callAIToSuggest(
-                topic,
-                content.name,
-                language,
-              );
+          if (type === 1) {
+            const content = await Promise.all(
+              milestone.content.map(async (content) => {
+                const suggestion = await this.callAIToSuggest(
+                  topic,
+                  content.name,
+                  language,
+                );
 
-              return {
-                ...content,
-                suggestion,
-              };
-            }),
-          );
-
-          return {
-            ...milestone,
-            content: content,
-          };
+                return {
+                  ...content,
+                  suggestion,
+                };
+              }),
+            );
+            return {
+              ...milestone,
+              content: content,
+            };
+          } else {
+            const suggestion = await this.callAIToSuggest(
+              topic,
+              milestone.name,
+              language,
+            );
+            return {
+              ...milestone,
+              suggestion: suggestion,
+            };
+          }
         }),
       );
 
@@ -60,11 +73,11 @@ export class RoadmapAiApiService {
         topics: roadmap.topics,
         language: language,
         isPublic: false,
-        type: 1,
+        type: type,
         milestones: JSON.stringify(milestones),
         avatar: generatedAvatar,
         tagId: [],
-        categoryId: 1,
+        categoryId: categoryId,
       };
       return this.roadmapService.createGeneratedRoadmap(
         userId,
@@ -75,11 +88,17 @@ export class RoadmapAiApiService {
     }
   }
 
-  async callAIToGen(topic: string, level: string, language: string) {
+  async callAIToGen(
+    topic: string,
+    level: string,
+    language: string,
+    type: number,
+  ) {
     const { data } = await this.httpService.axiosRef.post(`${AI_URL}/gen`, {
       topic,
       level,
       language,
+      type,
     });
 
     const regex = /\,(?!\s*?[\{\[\"\'\w])/g;
