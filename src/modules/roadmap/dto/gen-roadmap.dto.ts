@@ -4,13 +4,13 @@ class topic {
   @IsNotEmpty()
   topic: string;
 
-  @IsNotEmpty()
   level: string = 'beginner';
 
-  @IsNotEmpty()
   language: string = 'english';
 
   type: number = 1;
+
+  categoryId: number = 1;
 }
 
 export class GenRoadmap {

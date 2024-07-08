@@ -20,6 +20,7 @@ export class RoadmapAiApiService {
     level: string,
     language: string,
     type: number,
+    categoryId: number,
   ) {
     try {
       const roadmap = await this.callAIToGen(topic, level, language, type);
@@ -76,7 +77,7 @@ export class RoadmapAiApiService {
         milestones: JSON.stringify(milestones),
         avatar: generatedAvatar,
         tagId: [],
-        categoryId: 1,
+        categoryId: categoryId,
       };
       return this.roadmapService.createGeneratedRoadmap(
         userId,
